@@ -1,7 +1,7 @@
 
-from ..utils.apps import ColabPluginAppConfig
+from colab.plugins.utils.apps import ColabPluginAppConfig
 
 
 class NoosferoPluginAppConfig(ColabPluginAppConfig):
-    name = 'colab.plugins.noosfero'
+    name = 'colab_noosfero'
     verbose_name = 'Noosfero Plugin'

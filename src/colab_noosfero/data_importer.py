@@ -11,7 +11,7 @@ from colab.plugins.data import PluginDataImporter
 
 from .models import NoosferoArticle, NoosferoCommunity, NoosferoCategory
 
-LOGGER = logging.getLogger('colab.plugin.debug')
+LOGGER = logging.getLogger('colab_noosfero')
 
 
 class NoosferoDataImporter(PluginDataImporter):

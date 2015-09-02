@@ -47,7 +47,7 @@ class Migration(migrations.Migration):
                 ('identifier', models.TextField()),
                 ('description', models.TextField(null=True, blank=True)),
                 ('created_at', models.DateTimeField(blank=True)),
-                ('categories', models.ManyToManyField(to='noosfero.NoosferoCategory')),
+                ('categories', models.ManyToManyField(to='colab_noosfero.NoosferoCategory')),
                 ('user', models.ForeignKey(on_delete=django.db.models.deletion.SET_NULL, to=settings.AUTH_USER_MODEL, null=True)),
             ],
             options={
@@ -59,7 +59,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='noosferoarticle',
             name='categories',
-            field=models.ManyToManyField(to='noosfero.NoosferoCategory'),
+            field=models.ManyToManyField(to='colab_noosfero.NoosferoCategory'),
             preserve_default=True,
         ),
         migrations.AddField(
