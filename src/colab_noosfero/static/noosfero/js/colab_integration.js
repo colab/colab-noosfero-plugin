@@ -23,9 +23,13 @@ function feed_gitlab_tag()
        $tag.text("Esta comunidade não está associada a"+
                  " nenhum repositório no momento, para mais"+
                  " detalhes contate o administrador");
+
        $.getJSON(repository, {limit:activities_limit, offset:0},function(msg, e){
              $tag.html(msg.html);
-             $tag.text("<div class=\"see-more-repository\"><a href="+repository+">veja toda a atividade no repositório</a></div>");
+             $tag.append("<div class=\"see-more-repository\">"+
+					   "<a href="+repository+">"+
+					   "veja toda a atividade no repositório"+
+					   "</a></div>");
        });
 }
 
