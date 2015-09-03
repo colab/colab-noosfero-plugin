@@ -1,14 +1,39 @@
+/*
+    The below variables was declared in
+    colab/colab/plugins/noosfero/templates/proxy/noosfero.html:
 
-window.onload=transform_tags();
+    community         - community name from the noosfero
+    repository        - url for the community's repository
+    mailman_list      - list name linked with the community
+    threads_limit     - Number of threadsthat will be displayed
+    activities_limit  - Number of activities that will be displayed
+*/
+
+$(transform_tags);
 
 function  transform_tags()
 {
-       var tag = $('.software-community-dashboard');  
-       var url = $(location).attr('pathname'); 
-       var regex = new RegExp(/\/social\/(.+)\//g);
-       var community = regex.exec(url)[1];
-       var MAX = '7'
-       var request_path = '/spb/get_list/'+'?list_name='+community+'&'+'MAX='+MAX;
+       discussion_tag();
+       feed_gitlab_tag();
+}
 
-       tag.load(request_path)
+function feed_gitlab_tag()
+{
+       var $tag = $('#repository-feed-tab');
+       $tag.text("Esta comunidade não está associada a"+
+                 " nenhum repositório no momento, para mais"+
+                 " detalhes contate o administrador");
+       $.getJSON(repository, {limit:activities_limit, offset:0},function(msg, e){
+             $tag.html(msg.html);
+             $tag.text("<div class=\"see-more-repository\"><a href="+repository+">veja toda a atividade no repositório</a></div>");
+       });
+}
+
+function discussion_tag()
+{
+       var $tag = $('#discussions-tab');
+       var request_path = '/spb/get_list/'+
+                          '?list_name='+mailman_list+
+                          '&MAX='+list_limit;
+       $tag.load(request_path);
 }
