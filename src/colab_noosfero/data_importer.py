@@ -15,6 +15,7 @@ LOGGER = logging.getLogger('colab_noosfero')
 
 
 class NoosferoDataImporter(PluginDataImporter):
+    app_label = 'colab_noosfero'
 
     def get_request_url(self, path, **kwargs):
         upstream = self.config.get('upstream')
@@ -106,7 +107,3 @@ class NoosferoDataImporter(PluginDataImporter):
 
         LOGGER.info("Importing Articles")
         self.fetch_articles()
-
-    @property
-    def app_label(self):
-        return 'noosfero'
