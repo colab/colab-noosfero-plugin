@@ -11,7 +11,7 @@ class NoosferoProxyView(ColabProxyView):
     rewrite = (
         ('^/social/account/login(.*)$', r'{}\1'.format(settings.LOGIN_URL)),
     )
-    
+
     def dispatch(self, request, *args, **kwargs):
         return super(NoosferoProxyView, self).dispatch(request, *args, **kwargs)
 
@@ -34,17 +34,14 @@ class NoosferoProxyView(ColabProxyView):
                     'list_limit': 7,
                     'activities_limit': 7,
                 }
-                break             
+                break
 
         return context
 
     def get_community_name(self, path):
-        community = None
         words = self.request.path.split('/')
+        if not self.request.path.startswith('/social/profile'):
+            return
 
-        for index in range(len(words)):
-                if 'profile' in words[index]:
-                    community = words[index+1]
-                    break
-
-        return community
+        words = [word for word in words if word]
+        return words[-1]
