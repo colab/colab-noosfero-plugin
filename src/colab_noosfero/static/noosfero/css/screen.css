@@ -18,7 +18,7 @@
 
 /* Make menus never disapear */
 .colab-style li.dropdown {
-	display: block!important;
+/*	display: block!important; */
 }
 
 /* Fix righter profile image icon */
@@ -59,5 +59,5 @@
 
 /* Increase container margin because of noosfero pup ups */
 div#main-content {
-	margin-top: 100px;
+	margin-top: 0px;
 }
