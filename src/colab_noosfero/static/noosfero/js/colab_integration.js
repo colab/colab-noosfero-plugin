@@ -12,7 +12,7 @@
 $(transform_tags);
 
 function transform_tags() {
-  if (mailman_list) {
+  if (typeof mailman_list !== "undefined") {
     discussion_tag();
     feed_gitlab_tag();
   }
@@ -21,15 +21,15 @@ function transform_tags() {
 function feed_gitlab_tag() {
   var $tag = $('#repository-feed-tab');
   $tag.text("Esta comunidade não está associada a" +
-       " nenhum repositório no momento, para mais" +
-       " detalhes contate o administrador");
+            " nenhum repositório no momento, para mais" +
+            " detalhes contate o administrador");
 
   $.getJSON(repository, {limit: activities_limit, offset: 0}, function(msg, e) {
         $tag.html(msg.html);
         $tag.append("<div class=\"see-more-repository\">" +
-          "<a href=" + repository + ">" +
-          "veja toda a atividade no repositório" +
-          "</a></div>");
+                    "<a href=" + repository + ">" +
+                    "veja toda a atividade no repositório" +
+                    "</a></div>");
   });
 }
 
