@@ -8,7 +8,7 @@ class NoosferoPluginAppConfig(ColabPluginAppConfig):
     verbose_name = 'Noosfero Plugin'
     namespace = 'noosfero'
 
-    registered_signals = ['community_creation']
+    registered_signals = ['community_creation', 'community_updated']
     short_name = 'noosfero'
 
     def register_signal(self):
