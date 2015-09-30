@@ -1,4 +1,3 @@
-
 from colab.plugins.utils.apps import ColabPluginAppConfig
 from colab.signals.signals import register_signal
 
@@ -13,3 +12,6 @@ class NoosferoPluginAppConfig(ColabPluginAppConfig):
 
     def register_signal(self):
         register_signal(self.short_name, self.registered_signals)
+
+    def ready(self):
+        import colab_noosfero.signals
