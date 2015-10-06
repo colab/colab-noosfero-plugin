@@ -9,7 +9,7 @@ class NoosferoCategory(models.Model):
     name = models.TextField(null=True, blank=True)
 
     def __unicode__(self):
-        return "{}-{}".format(self.id, self.name)
+        return u"{}-{}".format(self.id, self.name)
 
 
 class NoosferoCommunity(Collaboration):
@@ -32,8 +32,8 @@ class NoosferoCommunity(Collaboration):
         return self.created_at
 
     def __unicode__(self):
-        return "{}({}) - {}".format(self.name, self.identifier,
-                                    self.description)
+        return u"{}({}) - {}".format(self.name, self.identifier,
+                                     self.description)
 
     class Meta:
         verbose_name = _('Community')
@@ -61,7 +61,7 @@ class NoosferoArticle(Collaboration):
         return self.created_at
 
     def __unicode__(self):
-        return "{}({})".format(self.title, self.path)
+        return u"{}({})".format(self.title, self.path)
 
     class Meta:
         verbose_name = _('Article')
