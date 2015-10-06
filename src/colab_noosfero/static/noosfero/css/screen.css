@@ -33,8 +33,9 @@
 }
 
 .colab-style #user-menu .dropdown-menu .thumbnail {
-	width: 100px;
+	width: 80px;
 	display: inline-block;
+	overflow: hidden;
 }
 
 .colab-style #user-menu .user-info {
