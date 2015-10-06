@@ -26,9 +26,9 @@ class NoosferoProxyView(ColabProxyView):
         associations = CommunityAssociations.objects.all()
 
         for community_association in associations:
-            if community_association.community.name in community:
+            if community_association.community.identifier in community:
                 context['community_association'] = {
-                    'community': community_association.community.name,
+                    'community': community_association.community.identifier,
                     'repository': community_association.group.url,
                     'mailman_list': community_association.mail_list.name,
                     'list_limit': 7,
