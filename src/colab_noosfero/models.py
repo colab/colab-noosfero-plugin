@@ -17,8 +17,8 @@ class NoosferoCommunity(Collaboration):
     id = models.IntegerField(primary_key=True)
     type = u'community'
     icon_name = u'file'
-    name = models.TextField()
-    identifier = models.TextField()
+    name = models.CharField(max_length=255)
+    identifier = models.CharField(max_length=255)
     description = models.TextField(null=True, blank=True)
     categories = models.ManyToManyField(NoosferoCategory)
     created_at = models.DateTimeField(blank=True)
