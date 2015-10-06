@@ -6,7 +6,7 @@ from django.utils.translation import ugettext_lazy as _
 class NoosferoCategory(models.Model):
 
     id = models.IntegerField(primary_key=True)
-    name = models.TextField(null=True, blank=True)
+    name = models.CharField(max_length=255, null=True, blank=True)
 
     def __unicode__(self):
         return u"{}-{}".format(self.id, self.name)
@@ -45,11 +45,11 @@ class NoosferoArticle(Collaboration):
     id = models.IntegerField(primary_key=True)
     type = u'article'
     icon_name = u'file'
-    title = models.TextField()
-    path = models.TextField(null=True, blank=True)
+    title = models.CharField(max_length=255)
+    path = models.CharField(max_length=255, null=True, blank=True)
     body = models.TextField(null=True, blank=True)
     categories = models.ManyToManyField(NoosferoCategory)
-    profile_identifier = models.TextField()
+    profile_identifier = models.CharField(max_length=255)
     created_at = models.DateTimeField(blank=True)
 
     @property
