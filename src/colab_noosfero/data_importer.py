@@ -31,7 +31,7 @@ class NoosferoDataImporter(PluginDataImporter):
         url = self.get_request_url(api_url, per_page=pages,
                                    page=page)
         try:
-            data = urllib2.urlopen(url, timeout=10)
+            data = urllib2.urlopen(url, timeout=1000)
             json_data = json.load(data)
         except urllib2.URLError:
             LOGGER.exception("Connection timeout: " + url)
