@@ -75,6 +75,9 @@ class NoosferoDataImporter(PluginDataImporter):
         for element in json_data:
             community = NoosferoCommunity()
             self.fill_object_data(element, community)
+            print(element)
+            if element['image'] :
+                community.thumb_url = element['image']['thumb_url']
             community.save()
 
             if 'categories' in element:

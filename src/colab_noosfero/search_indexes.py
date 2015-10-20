@@ -28,6 +28,7 @@ class NoosferoCommunityIndex(indexes.SearchIndex, indexes.Indexable):
     modified = indexes.DateTimeField(model_attr='modified', null=True)
     created_at = indexes.DateTimeField(model_attr='created_at', null=True)
     category = indexes.MultiValueField()
+    thumb_url = indexes.CharField(model_attr='thumb_url')
 
     def prepare_category(self, obj):
         return obj.categories.values_list('name', flat=True)
