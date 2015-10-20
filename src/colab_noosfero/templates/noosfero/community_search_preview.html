@@ -1,0 +1,14 @@
+{% load i18n tz highlight upstream %}
+
+
+<div>
+
+{% if not community.thumb_url %}
+  <img src="{{upstream|get_default_image_url }}" > 
+{% else %}
+  <img src="{{upstream|get_upstream }}{{community.thumb_url}}">
+{% endif %}
+{{ community.title  }}
+<br>
+
+</div>
