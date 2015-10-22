@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-09-07 18:03+0000\n"
+"POT-Creation-Date: 2015-10-22 13:05+0000\n"
 "PO-Revision-Date: Mon Sep  7 15:01:12 BRT 2015\n"
 "Last-Translator: Macártur de Sousa Carvalho <macartur.sc@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,34 +19,50 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: models.py:39
-msgid "Community"
-msgstr "Comunidade"
-
-#: models.py:40 noosfero.py:28
+#: src/colab_noosfero/filters.py:8 src/colab_noosfero/models.py:40
 msgid "Communities"
 msgstr "Comunidades"
 
-#: models.py:67
+#: src/colab_noosfero/filters.py:11
+msgid "Name"
+msgstr "Nome"
+
+#: src/colab_noosfero/filters.py:14
+msgid "Description"
+msgstr "Descrição"
+
+#: src/colab_noosfero/filters.py:18 src/colab_noosfero/filters.py:36
+msgid "Category"
+msgstr "Categoria"
+
+#: src/colab_noosfero/filters.py:26 src/colab_noosfero/models.py:67
 msgid "Article"
 msgstr "Artigo"
 
-#: models.py:68
+#: src/colab_noosfero/filters.py:29
+msgid "Title"
+msgstr "Título"
+
+#: src/colab_noosfero/filters.py:32
+msgid "Content"
+msgstr "Conteúdo"
+
+#: src/colab_noosfero/models.py:39
+msgid "Community"
+msgstr "Comunidade"
+
+#: src/colab_noosfero/models.py:68
 msgid "Articles"
 msgstr "Artigos"
 
-#: noosfero.py:21
 msgid "Social"
 msgstr "Social"
 
-#: noosfero.py:26
 msgid "Users"
 msgstr "Usuários"
 
-#: noosfero.py:30
 msgid "Profile"
 msgstr "Perfil"
 
-#: noosfero.py:32
 msgid "Control Panel"
 msgstr "Painel de Controle"
