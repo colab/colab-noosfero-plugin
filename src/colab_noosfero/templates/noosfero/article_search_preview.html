@@ -1,3 +1,13 @@
 {% load i18n tz highlight %}
 
-article
+{{ result.title }}
+
+{% if result.body %}
+  {{ result.body|truncatewords:"85" }}
+{% endif   %}
+{% if result.created_at %}
+   Published: {{ result.created_at|date:"d/F/Y" }}
+{% endif %}
+<br>
+Registred in: Article
+<br>

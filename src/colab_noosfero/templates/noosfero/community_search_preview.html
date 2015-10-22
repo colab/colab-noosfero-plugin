@@ -1,14 +1,16 @@
 {% load i18n tz highlight upstream %}
 
-
 <div>
+  {% get_image_link_url result.thumb_url as image_link %}
 
-{% if not community.thumb_url %}
-  <img src="{{upstream|get_default_image_url }}" > 
-{% else %}
-  <img src="{{upstream|get_upstream }}{{community.thumb_url}}">
-{% endif %}
-{{ community.title  }}
-<br>
-
+  <img src={{ image_link }}>
+  {{ result.title }}
+  <br>
+  {% if result.description %}
+    {{ result.description|truncatewords:"85" }}
+  {% endif %}
+  Creation Date: {{ result.created_at|date:"d/F/Y" }}
+  <br>
+  Registred in: Community
+  <br>
 </div>
