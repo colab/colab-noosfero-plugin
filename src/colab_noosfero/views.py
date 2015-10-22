@@ -12,7 +12,8 @@ class NoosferoProxyView(ColabProxyView):
     )
 
     def dispatch(self, request, *args, **kwargs):
-        return super(NoosferoProxyView, self).dispatch(request, *args, **kwargs)
+        return super(NoosferoProxyView, self).dispatch(request, *args,
+                                                       **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super(NoosferoProxyView, self).get_context_data(**kwargs)

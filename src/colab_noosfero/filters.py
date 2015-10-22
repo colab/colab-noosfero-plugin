@@ -11,10 +11,11 @@ def get_filters(request):
                 ('title', _(u'Name'), request.GET.get('title')),
                 (
                     'description',
-                    _(u'Description'), 
+                    _(u'Description'),
                     request.GET.get('description'),
                 ),
-                ('category', _(u'Category'), request.GET.get('category'),
+                (
+                    'category', _(u'Category'), request.GET.get('category'),
                     'list',
                     [(v, v) for v in NoosferoCategory.objects.values_list(
                      'name', flat=True)]
@@ -28,10 +29,11 @@ def get_filters(request):
                 ('title', _(u'Title'), request.GET.get('title')),
                 (
                     'body',
-                    _(u'Content'), 
+                    _(u'Content'),
                     request.GET.get('body'),
                 ),
-                ('category', _(u'Category'), request.GET.get('category'),
+                (
+                    'category', _(u'Category'), request.GET.get('category'),
                     'list',
                     [(v, v) for v in NoosferoCategory.objects.values_list(
                      'name', flat=True)]
