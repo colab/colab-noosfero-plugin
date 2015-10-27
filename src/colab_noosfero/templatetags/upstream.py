@@ -9,7 +9,7 @@ def get_upstream():
 
 @register.assignment_tag
 def get_default_image_url():
-    return get_upstream()+"/images/icons-app/community-thumb.png"
+    return get_upstream()+"/images/icons-app/community-big.png"
 
 @register.assignment_tag
 def get_image_link_url(link):
