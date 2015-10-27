@@ -22,7 +22,7 @@ class NoosferoCommunity(Collaboration):
     description = models.TextField(null=True, blank=True)
     categories = models.ManyToManyField(NoosferoCategory)
     created_at = models.DateTimeField(blank=True)
-    thumb_url = models.CharField(max_length=255)
+    thumb_url = models.CharField(max_length=255, null=True)
 
     @property
     def url(self):
@@ -44,9 +44,10 @@ class NoosferoCommunity(Collaboration):
 class NoosferoArticle(Collaboration):
 
     id = models.IntegerField(primary_key=True)
-    type = u'article'
+    type = u'noosfero_articles'
     icon_name = u'file'
     title = models.CharField(max_length=255)
+    username = models.CharField(max_length=255, null=True)
     path = models.CharField(max_length=255, null=True, blank=True)
     body = models.TextField(null=True, blank=True)
     categories = models.ManyToManyField(NoosferoCategory)

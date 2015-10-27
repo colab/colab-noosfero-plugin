@@ -50,6 +50,7 @@ class NoosferoArticleIndex(indexes.SearchIndex, indexes.Indexable):
 
     text = indexes.CharField(document=True, use_template=True, stored=False)
     title = indexes.CharField(model_attr='title')
+    username = indexes.CharField(model_attr='username')
     body = indexes.CharField(model_attr='body', null=True)
     url = indexes.CharField(model_attr='url', indexed=False)
     icon_name = indexes.CharField()
