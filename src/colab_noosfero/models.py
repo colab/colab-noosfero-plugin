@@ -1,6 +1,11 @@
 from colab.plugins.utils.models import Collaboration
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+from django.conf import settings
+
+
+def get_prefix():
+    return settings.COLAB_APPS['colab_noosfero']['urls']['prefix'][1:-1]
 
 
 class NoosferoCategory(models.Model):
@@ -26,7 +31,8 @@ class NoosferoCommunity(Collaboration):
 
     @property
     def url(self):
-        return u'/social/profile/{}'.format(self.identifier)
+        return '/{prefix}/profile/{id}'.format(prefix=get_prefix(),
+                                               id=self.identifier)
 
     @property
     def modified(self):
@@ -56,7 +62,11 @@ class NoosferoArticle(Collaboration):
 
     @property
     def url(self):
-        return u'/social/{}/{}'.format(self.profile_identifier, self.path)
+        return u'/{prefix}/{profile}/{path}'.format(
+            prefix=get_prefix(),
+            profile=self.profile_identifier,
+            path=self.path
+        )
 
     @property
     def modified(self):
