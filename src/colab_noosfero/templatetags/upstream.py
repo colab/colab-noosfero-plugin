@@ -3,16 +3,17 @@ from django.conf import settings
 
 register = template.Library()
 
-@register.assignment_tag
+
 def get_upstream():
     return settings.COLAB_APPS['colab_noosfero']['upstream'][:-1]
 
-@register.assignment_tag
-def get_default_image_url():
-    return get_upstream()+"/images/icons-app/community-big.png"
 
-@register.assignment_tag
-def get_image_link_url(link):
+def get_default_image_url(size):
+    return get_upstream() + "/images/icons-app/community-{}.png".format(size)
+
+
+@register.simple_tag()
+def get_image_link_url(link, size):
     if not link:
-        return get_default_image_url
-    return get_upstream()+link
+        return get_default_image_url(size)
+    return get_upstream() + link
