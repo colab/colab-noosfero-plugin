@@ -5,8 +5,8 @@ from django.core.urlresolvers import reverse
 register = template.Library()
 
 
-@register.simple_tag(takes_context=True)
-def profile_url(context, username):
+@register.simple_tag()
+def profile_url(username):
     if not username:
         return ""
 
