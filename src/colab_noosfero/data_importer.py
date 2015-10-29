@@ -9,7 +9,12 @@ from django.db.models.fields import DateTimeField
 
 from colab.plugins.data import PluginDataImporter
 
-from .models import NoosferoArticle, NoosferoCommunity, NoosferoCategory
+from .models import (NoosferoArticle, NoosferoCommunity,
+                     NoosferoCategory, NoosferoSoftwareAdmin)
+
+from colab.plugins.models import TimeStampPlugin
+
+from datetime import datetime
 
 LOGGER = logging.getLogger('colab_noosfero')
 
@@ -20,6 +25,7 @@ class NoosferoDataImporter(PluginDataImporter):
     def get_request_url(self, path, **kwargs):
         upstream = self.config.get('upstream')
         kwargs['private_token'] = self.config.get('private_token')
+
         params = urllib.urlencode(kwargs)
 
         if upstream[-1] == '/':
@@ -27,9 +33,9 @@ class NoosferoDataImporter(PluginDataImporter):
 
         return u'{}{}?{}'.format(upstream, path, params)
 
-    def get_json_data(self, api_url, page, pages=1000):
-        url = self.get_request_url(api_url, per_page=pages,
-                                   page=page)
+    def get_json_data(self, api_url, page, per_page=1000, **kwargs):
+        url = self.get_request_url(api_url, per_page=per_page, page=page,
+                                   **kwargs)
         try:
             data = urllib2.urlopen(url, timeout=1000)
             json_data = json.load(data)
@@ -69,7 +75,9 @@ class NoosferoDataImporter(PluginDataImporter):
         return _object
 
     def fetch_communities(self):
-        json_data = self.get_json_data('/api/v1/communities', 1)
+        url = '/api/v1/communities'
+        timestamp = self.get_last_updated('NoosferoCommunity')
+        json_data = self.get_json_data(url, 1, timestamp=timestamp)
 
         if len(json_data) == 0:
             return
@@ -89,8 +97,38 @@ class NoosferoDataImporter(PluginDataImporter):
                         id=category_json["id"], name=category_json["name"])[0]
                     community.categories.add(category.id)
 
+        self.update_timestamp('NoosferoCommunity')
+
+    def fetch_software_admins(self):
+        url = '/api/v1/software_communities'
+        timestamp = self.get_last_updated('NoosferoSoftwareAdmin')
+        json_data = self.get_json_data(url, 1, timestamp=timestamp)
+
+        if len(json_data) == 0:
+            return
+
+        json_data = json_data['softwares']
+        for element in json_data:
+
+            if not element['community']:
+                continue
+
+            software_name = element['community']['identifier']
+            community = NoosferoCommunity.objects.filter(
+                identifier=software_name).first()
+
+            for admin in element['community']['admins']:
+                instance = NoosferoSoftwareAdmin.objects.get_or_create(
+                    id=admin['id'], name=admin['name'])[0]
+
+                community.admins.add(instance.id)
+
+        self.update_timestamp('NoosferoSoftwareAdmin')
+
     def fetch_articles(self):
-        json_data = self.get_json_data('/api/v1/articles', 1)
+        url = '/api/v1/articles'
+        timestamp = self.get_last_updated('NoosferoArticle')
+        json_data = self.get_json_data(url, 1, timestamp=timestamp)
 
         if len(json_data) == 0:
             return
@@ -107,9 +145,23 @@ class NoosferoDataImporter(PluginDataImporter):
                     id=category_json["id"], name=category_json["name"])[0]
                 article.categories.add(category.id)
 
+        self.update_timestamp('NoosferoArticle')
+
+    def update_timestamp(self, class_name):
+        instance = TimeStampPlugin.objects.filter(name=class_name)[0]
+        instance.timestamp = datetime.now()
+        instance.save()
+
+    def get_last_updated(self, class_name):
+        instance = TimeStampPlugin.objects.get_or_create(name=class_name)[0]
+        return instance.timestamp.isoformat()
+
     def fetch_data(self):
         LOGGER.info("Importing Communities")
         self.fetch_communities()
 
         LOGGER.info("Importing Articles")
         self.fetch_articles()
+
+        LOGGER.info("Importing Software Admins")
+        self.fetch_software_admins()
