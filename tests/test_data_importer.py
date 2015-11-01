@@ -70,7 +70,3 @@ class NoosferoDataImporterTest(TestCase):
         admin = NoosferoSoftwareAdmin.objects.filter(
             id=68).first()
         self.assertEqual('admin admin',admin.name)
-
-
-
-

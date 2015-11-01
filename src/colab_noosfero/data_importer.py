@@ -36,6 +36,7 @@ class NoosferoDataImporter(PluginDataImporter):
     def get_json_data(self, api_url, page, per_page=1000, **kwargs):
         url = self.get_request_url(api_url, per_page=per_page, page=page,
                                    **kwargs)
+
         try:
             data = urllib2.urlopen(url, timeout=1000)
             json_data = json.load(data)
@@ -76,7 +77,7 @@ class NoosferoDataImporter(PluginDataImporter):
 
     def fetch_communities(self):
         url = '/api/v1/communities'
-        timestamp = self.get_last_updated('NoosferoCommunity')
+        timestamp = TimeStampPlugin.get_last_updated('NoosferoCommunity')
         json_data = self.get_json_data(url, 1, timestamp=timestamp)
 
         if len(json_data) == 0:
@@ -86,7 +87,7 @@ class NoosferoDataImporter(PluginDataImporter):
         for element in json_data:
             community = NoosferoCommunity()
             self.fill_object_data(element, community)
-            print(element)
+
             if element['image']:
                 community.thumb_url = element['image']['thumb_url']
             community.save()
@@ -97,11 +98,11 @@ class NoosferoDataImporter(PluginDataImporter):
                         id=category_json["id"], name=category_json["name"])[0]
                     community.categories.add(category.id)
 
-        self.update_timestamp('NoosferoCommunity')
+        TimeStampPlugin.update_timestamp('NoosferoCommunity')
 
     def fetch_software_admins(self):
         url = '/api/v1/software_communities'
-        timestamp = self.get_last_updated('NoosferoSoftwareAdmin')
+        timestamp = TimeStampPlugin.get_last_updated('NoosferoSoftwareAdmin')
         json_data = self.get_json_data(url, 1, timestamp=timestamp)
 
         if len(json_data) == 0:
@@ -123,11 +124,11 @@ class NoosferoDataImporter(PluginDataImporter):
 
                 community.admins.add(instance.id)
 
-        self.update_timestamp('NoosferoSoftwareAdmin')
+        TimeStampPlugin.update_timestamp('NoosferoSoftwareAdmin')
 
     def fetch_articles(self):
         url = '/api/v1/articles'
-        timestamp = self.get_last_updated('NoosferoArticle')
+        timestamp = TimeStampPlugin.get_last_updated('NoosferoArticle')
         json_data = self.get_json_data(url, 1, timestamp=timestamp)
 
         if len(json_data) == 0:
@@ -145,16 +146,7 @@ class NoosferoDataImporter(PluginDataImporter):
                     id=category_json["id"], name=category_json["name"])[0]
                 article.categories.add(category.id)
 
-        self.update_timestamp('NoosferoArticle')
-
-    def update_timestamp(self, class_name):
-        instance = TimeStampPlugin.objects.filter(name=class_name)[0]
-        instance.timestamp = datetime.now()
-        instance.save()
-
-    def get_last_updated(self, class_name):
-        instance = TimeStampPlugin.objects.get_or_create(name=class_name)[0]
-        return instance.timestamp.isoformat()
+        TimeStampPlugin.update_timestamp('NoosferoArticle')
 
     def fetch_data(self):
         LOGGER.info("Importing Communities")
