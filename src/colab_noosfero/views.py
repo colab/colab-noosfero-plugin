@@ -2,7 +2,6 @@
 from django.conf import settings
 
 from colab.plugins.views import ColabProxyView
-from colab_spb.models import CommunityAssociations
 
 
 class NoosferoProxyView(ColabProxyView):
@@ -13,7 +12,8 @@ class NoosferoProxyView(ColabProxyView):
     )
 
     def dispatch(self, request, *args, **kwargs):
-        return super(NoosferoProxyView, self).dispatch(request, *args, **kwargs)
+        return super(NoosferoProxyView, self).dispatch(request, *args,
+                                                       **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super(NoosferoProxyView, self).get_context_data(**kwargs)
@@ -22,20 +22,7 @@ class NoosferoProxyView(ColabProxyView):
 
         if not community:
             return
-
-        associations = CommunityAssociations.objects.all()
-
-        for community_association in associations:
-            if community_association.community.identifier in community:
-                context['community_association'] = {
-                    'community': community_association.community.identifier,
-                    'repository': community_association.group.url,
-                    'mailman_list': community_association.mail_list.name,
-                    'list_limit': 7,
-                    'activities_limit': 7,
-                }
-                break
-
+        context['community'] = community
         return context
 
     def get_community_name(self, path):
