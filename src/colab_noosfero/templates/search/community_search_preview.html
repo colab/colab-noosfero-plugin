@@ -16,9 +16,9 @@
       <p>{{ result.description|truncatewords:"85" }}</p>
     {% endif %}
 
-    <strong>{% trans "Since" %}: {% date_format result.created_at %}</strong>
+    <small><strong>{% trans "Since" %}: {% date_format result.created_at %}</strong></small>
     <br>
-    {% trans "Registred in" %}: <strong>{% trans "Community" %}</strong>
+    <small>{% trans "Registred in" %}: <strong>{% trans "Community" %}</strong></small>
   </div>
 </div>
 <div class="row">

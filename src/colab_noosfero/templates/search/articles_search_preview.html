@@ -1,14 +1,15 @@
 {% load i18n tz highlight date_format urls %}
 
 <div class="row">
-  {% datetime_format result.created_at %} {% profile_url result.username %}
+  <div class="col-md-12">
+    <small>{% datetime_format result.created_at %} {% profile_url result.username %}</small>
 
-  <h4><a href="{{result.url}}">{{ result.title }}</a></h4>
-  {% if result.body %}
-    <p><a href="{{result.url}}">{{ result.body|truncatewords:"85" }}</a></p>
-  {% endif   %}
+    <h4><a href="{{result.url}}">{{ result.title }}</a></h4>
+    {% if result.body %}
+      <p><a href="{{result.url}}">{{ result.body|truncatewords:"85" }}</a></p>
+    {% endif   %}
 
-  {% trans "Registred in" %}: <strong>{% trans "Article" %}</strong>
-  <br>
+    <small>{% trans "Registred in" %}: <strong>{% trans "Article" %}</strong></small>
+  </div>
   <hr>
 </div>
