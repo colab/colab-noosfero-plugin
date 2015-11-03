@@ -50,7 +50,7 @@ class NoosferoCommunity(Collaboration):
 class NoosferoArticle(Collaboration):
 
     id = models.IntegerField(primary_key=True)
-    type = u'noosfero_articles'
+    type = u'articles'
     icon_name = u'file'
     title = models.CharField(max_length=255)
     username = models.CharField(max_length=255, null=True)

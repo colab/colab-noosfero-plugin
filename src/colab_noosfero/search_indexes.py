@@ -43,7 +43,7 @@ class NoosferoCommunityIndex(indexes.SearchIndex, indexes.Indexable):
         return NoosferoCommunity
 
     def prepare_type(self, obj):
-        return u'noosfero_community'
+        return u'community'
 
 
 class NoosferoArticleIndex(indexes.SearchIndex, indexes.Indexable):
@@ -69,4 +69,4 @@ class NoosferoArticleIndex(indexes.SearchIndex, indexes.Indexable):
         return u'file'
 
     def prepare_type(self, obj):
-        return u'noosfero_articles'
+        return u'articles'
