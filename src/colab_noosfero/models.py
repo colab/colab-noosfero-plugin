@@ -27,7 +27,7 @@ class NoosferoCommunity(Collaboration):
     description = models.TextField(null=True, blank=True)
     categories = models.ManyToManyField(NoosferoCategory)
     created_at = models.DateTimeField(blank=True)
-    thumb_url = models.CharField(max_length=255, null=True)
+    thumb_url = models.CharField(max_length=255, null=True, blank=True)
 
     @property
     def url(self):
