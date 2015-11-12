@@ -1,6 +1,11 @@
 from colab.plugins.utils.models import Collaboration
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+from django.conf import settings
+
+
+def get_prefix():
+    return settings.COLAB_APPS['colab_noosfero']['urls']['prefix'][1:-1]
 
 
 class NoosferoCategory(models.Model):
@@ -22,10 +27,12 @@ class NoosferoCommunity(Collaboration):
     description = models.TextField(null=True, blank=True)
     categories = models.ManyToManyField(NoosferoCategory)
     created_at = models.DateTimeField(blank=True)
+    thumb_url = models.CharField(max_length=255, null=True, blank=True)
 
     @property
     def url(self):
-        return u'/social/profile/{}'.format(self.identifier)
+        return '/{prefix}/profile/{id}'.format(prefix=get_prefix(),
+                                               id=self.identifier)
 
     @property
     def modified(self):
@@ -43,9 +50,10 @@ class NoosferoCommunity(Collaboration):
 class NoosferoArticle(Collaboration):
 
     id = models.IntegerField(primary_key=True)
-    type = u'article'
+    type = u'articles'
     icon_name = u'file'
     title = models.CharField(max_length=255)
+    username = models.CharField(max_length=255, null=True)
     path = models.CharField(max_length=255, null=True, blank=True)
     body = models.TextField(null=True, blank=True)
     categories = models.ManyToManyField(NoosferoCategory)
@@ -54,7 +62,11 @@ class NoosferoArticle(Collaboration):
 
     @property
     def url(self):
-        return u'/social/{}/{}'.format(self.profile_identifier, self.path)
+        return u'/{prefix}/{profile}/{path}'.format(
+            prefix=get_prefix(),
+            profile=self.profile_identifier,
+            path=self.path
+        )
 
     @property
     def modified(self):

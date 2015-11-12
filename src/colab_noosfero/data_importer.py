@@ -47,6 +47,9 @@ class NoosferoDataImporter(PluginDataImporter):
                         element["author"]["name"])
                     continue
 
+                if field.name == "username":
+                    _object.username = element["author"]["identifier"]
+
                 if field.name == "profile_identifier":
                     _object.profile_identifier = \
                         element["profile"]["identifier"]
@@ -75,6 +78,9 @@ class NoosferoDataImporter(PluginDataImporter):
         for element in json_data:
             community = NoosferoCommunity()
             self.fill_object_data(element, community)
+            print(element)
+            if element['image']:
+                community.thumb_url = element['image']['thumb_url']
             community.save()
 
             if 'categories' in element:

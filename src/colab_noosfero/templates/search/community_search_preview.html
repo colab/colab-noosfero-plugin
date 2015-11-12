@@ -1,0 +1,26 @@
+{% load i18n tz highlight upstream date_format %}
+
+<div class="row">
+  <div class="col-md-2">
+    {% block community_img %}
+      <a href="{{result.url}}">
+        <img src="{% get_image_link_url result.thumb_url 'thumb' %}">
+      </a>
+    {% endblock community_img %}
+  </div>
+
+  <div class="col-md-10">
+    <h4><a href="{{result.url}}">{{ result.title }}</a></h4>
+
+    {% if result.description %}
+      <p>{{ result.description|truncatewords:"85" }}</p>
+    {% endif %}
+
+    <small><strong>{% trans "Since" %}: {% date_format result.created_at %}</strong></small>
+    <br>
+    <small>{% trans "Registred in" %}: <strong>{% trans "Community" %}</strong></small>
+  </div>
+</div>
+<div class="row">
+  <hr>
+</div>
