@@ -66,3 +66,6 @@ msgstr "Perfil"
 
 msgid "Control Panel"
 msgstr "Painel de Controle"
+
+msgid "Institutions"
+msgstr "Instituições"
