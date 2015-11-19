@@ -4,7 +4,7 @@ from colab_noosfero.models import NoosferoCategory
 
 def get_filters(request):
     return {
-        'noosfero_community': {
+        'community': {
             'name': _(u'Communities'),
             'icon': 'globe',
             'fields': (
@@ -22,7 +22,7 @@ def get_filters(request):
                 ),
             ),
         },
-        'noosfero_articles': {
+        'articles': {
             'name': _(u'Article'),
             'icon': 'list-alt',
             'fields': (
