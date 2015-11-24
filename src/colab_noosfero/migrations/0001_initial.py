@@ -17,10 +17,10 @@ class Migration(migrations.Migration):
             name='NoosferoArticle',
             fields=[
                 ('id', models.IntegerField(serialize=False, primary_key=True)),
-                ('title', models.CharField(max_length=255)),
-                ('path', models.CharField(max_length=255, null=True, blank=True)),
+                ('title', models.TextField()),
+                ('path', models.TextField(null=True, blank=True)),
                 ('body', models.TextField(null=True, blank=True)),
-                ('profile_identifier', models.CharField(max_length=255)),
+                ('profile_identifier', models.TextField()),
                 ('created_at', models.DateTimeField(blank=True)),
             ],
             options={
@@ -33,7 +33,7 @@ class Migration(migrations.Migration):
             name='NoosferoCategory',
             fields=[
                 ('id', models.IntegerField(serialize=False, primary_key=True)),
-                ('name', models.CharField(max_length=255, null=True, blank=True)),
+                ('name', models.TextField(null=True, blank=True)),
             ],
             options={
             },
@@ -43,47 +43,18 @@ class Migration(migrations.Migration):
             name='NoosferoCommunity',
             fields=[
                 ('id', models.IntegerField(serialize=False, primary_key=True)),
-                ('name', models.CharField(max_length=255)),
-                ('identifier', models.CharField(max_length=255)),
+                ('name', models.TextField()),
+                ('identifier', models.TextField()),
                 ('description', models.TextField(null=True, blank=True)),
                 ('created_at', models.DateTimeField(blank=True)),
+                ('categories', models.ManyToManyField(to='colab_noosfero.NoosferoCategory')),
+                ('user', models.ForeignKey(on_delete=django.db.models.deletion.SET_NULL, to=settings.AUTH_USER_MODEL, null=True)),
             ],
             options={
                 'verbose_name': 'Community',
                 'verbose_name_plural': 'Communities',
             },
             bases=(models.Model,),
-        ),
-        migrations.CreateModel(
-            name='NoosferoSoftwareAdmin',
-            fields=[
-                ('id', models.IntegerField(serialize=False, primary_key=True)),
-                ('name', models.CharField(max_length=255)),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.SET_NULL, to=settings.AUTH_USER_MODEL, null=True)),
-            ],
-            options={
-                'verbose_name': 'Noosfero Admin',
-                'verbose_name_plural': 'Noosfero Admins',
-            },
-            bases=(models.Model,),
-        ),
-        migrations.AddField(
-            model_name='noosferocommunity',
-            name='admins',
-            field=models.ManyToManyField(to='colab_noosfero.NoosferoSoftwareAdmin'),
-            preserve_default=True,
-        ),
-        migrations.AddField(
-            model_name='noosferocommunity',
-            name='categories',
-            field=models.ManyToManyField(to='colab_noosfero.NoosferoCategory'),
-            preserve_default=True,
-        ),
-        migrations.AddField(
-            model_name='noosferocommunity',
-            name='user',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.SET_NULL, to=settings.AUTH_USER_MODEL, null=True),
-            preserve_default=True,
         ),
         migrations.AddField(
             model_name='noosferoarticle',
