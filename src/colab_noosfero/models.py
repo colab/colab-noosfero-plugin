@@ -17,6 +17,16 @@ class NoosferoCategory(models.Model):
         return u"{}-{}".format(self.id, self.name)
 
 
+class NoosferoSoftwareAdmin(Collaboration):
+
+    id = models.IntegerField(primary_key=True)
+    name = models.CharField(max_length=255)
+
+    class Meta:
+        verbose_name = _('Noosfero Admin')
+        verbose_name_plural = _('Noosfero Admins')
+
+
 class NoosferoCommunity(Collaboration):
 
     id = models.IntegerField(primary_key=True)
@@ -26,6 +36,7 @@ class NoosferoCommunity(Collaboration):
     identifier = models.CharField(max_length=255)
     description = models.TextField(null=True, blank=True)
     categories = models.ManyToManyField(NoosferoCategory)
+    admins = models.ManyToManyField(NoosferoSoftwareAdmin)
     created_at = models.DateTimeField(blank=True)
     thumb_url = models.CharField(max_length=255, null=True, blank=True)
 
