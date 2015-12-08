@@ -17,7 +17,7 @@ class NoosferoCategory(models.Model):
         return u"{}-{}".format(self.id, self.name)
 
 
-class NoosferoSoftwareAdmin(Collaboration):
+class NoosferoSoftwareAdmin(models.Model):
 
     id = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=255)
