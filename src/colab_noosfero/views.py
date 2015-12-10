@@ -32,3 +32,8 @@ class NoosferoProxyView(ColabProxyView):
 
         words = [word for word in words if word]
         return words[-1]
+
+    def get_request_headers(self):
+        headers = super(NoosferoProxyView, self).get_request_headers()
+        headers['Host'] = self.request.META['HTTP_HOST']
+        return headers
