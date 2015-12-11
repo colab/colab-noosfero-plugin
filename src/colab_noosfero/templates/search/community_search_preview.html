@@ -1,4 +1,4 @@
-{% load i18n tz highlight upstream date_format %}
+{% load i18n tz highlight upstream %}
 
 <div class="row">
   <div class="col-md-2">
@@ -16,7 +16,7 @@
       <p>{{ result.description|striptags|truncatewords:"85" }}</p>
     {% endif %}
 
-    <small><strong>{% trans "Since" %}: {% date_format result.created_at %}</strong></small>
+    <small><strong>{% trans "Since" %}: {{ result.created_at|date:"d F Y" }}</strong></small>
     <br>
     <small>{% trans "Registred in" %}: <strong>{% trans "Community" %}</strong></small>
   </div>

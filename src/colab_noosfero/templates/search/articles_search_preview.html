@@ -1,8 +1,8 @@
-{% load i18n tz highlight date_format urls %}
+{% load i18n tz highlight urls %}
 
 <div class="row">
   <div class="col-md-12">
-    <small>{% datetime_format result.created_at %} {% profile_url result.username %}</small>
+    <small>{{ result.created_at|date:"d F Y" }} {% profile_url result.username %}</small>
 
     <h4><a href="{{result.url}}">{{ result.title }}</a></h4>
     {% if result.body %}
