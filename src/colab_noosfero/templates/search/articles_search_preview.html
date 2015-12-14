@@ -6,7 +6,7 @@
 
     <h4><a href="{{result.url}}">{{ result.title }}</a></h4>
     {% if result.body %}
-      <p><a href="{{result.url}}">{{ result.body|striptags|truncatewords:"85" }}</a></p>
+      <p><a href="{{result.url}}">{{ result.body|striptags|truncatechars:"140" }}</a></p>
     {% endif   %}
 
     <small class="colab-result-register">{% trans "Registred in" %}: <strong>{% trans "Article" %}</strong></small>

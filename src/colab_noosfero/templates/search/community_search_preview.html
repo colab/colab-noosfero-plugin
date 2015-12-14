@@ -13,7 +13,7 @@
     <h4><a href="{{result.url}}">{{ result.title }}</a></h4>
 
     {% if result.description %}
-      <p>{{ result.description|striptags|truncatewords:"85" }}</p>
+      <p>{{ result.description|striptags|truncatechars:"140" }}</p>
     {% endif %}
 
     <small><strong>{% trans "Since" %}: {{ result.created_at|date:"d F Y" }}</strong></small>
