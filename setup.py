@@ -14,7 +14,7 @@ tests_require = ['mock']
 
 setup(
     name="colab-noosfero",
-    version='0.1.0',
+    version='0.2.4',
     author='Sergio Oliveira',
     author_email='sergio@tracy.com.br',
     url='https://github.com/colab/colab-noosfero-plugin',
