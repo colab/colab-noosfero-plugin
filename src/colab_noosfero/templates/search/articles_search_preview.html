@@ -5,9 +5,9 @@
     <small>{{ result.created_at|date:"d F Y" }} {% profile_url result.username %}</small>
 
     <h4><a href="{{result.url}}">{{ result.title }}</a></h4>
-    {% if result.body %}
+    {% if result.body and result.body != "{}" %}
       <p><a href="{{result.url}}">{{ result.body|striptags|truncatechars:"140" }}</a></p>
-    {% endif   %}
+    {% endif %}
 
     <small class="colab-result-register">{% trans "Registred in" %}: <strong>{% trans "Article" %}</strong></small>
   </div>
