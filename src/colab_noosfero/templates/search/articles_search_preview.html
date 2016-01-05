@@ -1,15 +1,16 @@
-{% load i18n tz highlight urls %}
+{% extends "search-base.html" %}
+{% load urls set_var %}
 
-<div class="row">
-  <div class="col-md-12">
-    <small>{{ result.created_at|date:"d F Y" }} {% profile_url result.username %}</small>
+{% block content %}
+  {% profile_url result.username|default_if_none:"" as user_url%}
+  {% set 'author' user_url %}
+  {% set 'title' result.title %}
+  {% set 'modified' result.created_at %}
+  {% set 'url' result.url %}
+  {% set 'registered_in' "Article" %}
+  {% if result.body != "{}"  %}
+      {% set 'description' result.body|striptags|truncatechars:"140" %}
+  {% endif %}
 
-    <h4><a href="{{result.url}}">{{ result.title }}</a></h4>
-    {% if result.body and result.body != "{}" %}
-      <p><a href="{{result.url}}">{{ result.body|striptags|truncatechars:"140" }}</a></p>
-    {% endif %}
-
-    <small class="colab-result-register">{% trans "Registred in" %}: <strong>{% trans "Article" %}</strong></small>
-  </div>
-  <hr>
-</div>
+  {{ block.super }}
+{% endblock content %}
