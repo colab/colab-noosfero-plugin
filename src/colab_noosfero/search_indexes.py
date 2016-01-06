@@ -83,7 +83,7 @@ class NoosferoSoftwareCommunitiesIndex(indexes.SearchIndex, indexes.Indexable):
     repository_link = indexes.CharField(model_attr='repository_link',
                                         null=True)
     features = indexes.CharField(model_attr='features', null=True)
-    license = indexes.CharField(model_attr='license_info')
+    license = indexes.CharField(model_attr='license_info', null=True)
     tags = indexes.MultiValueField()
     community = indexes.CharField()
     community_url = indexes.CharField()
