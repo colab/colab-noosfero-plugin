@@ -8,7 +8,7 @@ import colab_noosfero.models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('colab_noosfero', '0005_auto_20151123_1816'),
+        ('colab_noosfero', '0006_remove_noosferosoftwareadmin_user'),
     ]
 
     operations = [

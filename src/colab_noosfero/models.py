@@ -49,6 +49,7 @@ class NoosferoSoftwareAdmin(models.Model):
 
     id = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=255)
+    username = models.CharField(max_length=255)
 
     class Meta:
         verbose_name = _('Noosfero Admin')

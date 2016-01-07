@@ -131,7 +131,8 @@ class NoosferoDataImporter(PluginDataImporter):
     def fetch_software_admins(self, community, json_data):
         for element in json_data:
             software_admin = NoosferoSoftwareAdmin.objects.get_or_create(
-                id=element["id"], name=element["name"])[0]
+                id=element["id"], name=element["name"],
+                username=element["username"])[0]
             community.admins.add(software_admin.id)
 
     def fetch_software_communities(self):
