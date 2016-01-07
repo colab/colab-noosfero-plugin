@@ -37,7 +37,6 @@ class NoosferoDataImporter(PluginDataImporter):
 
         try:
             data = urllib2.urlopen(url, timeout=1000)
-            print(url)
             json_data = json.load(data)
         except urllib2.URLError:
             LOGGER.exception("Connection timeout: " + url)
