@@ -2,6 +2,34 @@ from colab.plugins.utils.models import Collaboration
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
+import ast
+
+
+class ListField(models.TextField):
+    __metaclass__ = models.SubfieldBase
+    description = "Stores a python list"
+
+    def __init__(self, *args, **kwargs):
+        super(ListField, self).__init__(*args, **kwargs)
+
+    def to_python(self, value):
+        if not value:
+            value = []
+
+        if isinstance(value, list):
+            return value
+
+        return ast.literal_eval(value)
+
+    def get_prep_value(self, value):
+        if value is None:
+            return value
+
+        return unicode(value)
+
+    def value_to_string(self, obj):
+        value = self._get_val_from_obj(obj)
+        return self.get_db_prep_value(value)
 
 
 def get_prefix():
@@ -21,6 +49,7 @@ class NoosferoSoftwareAdmin(models.Model):
 
     id = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=255)
+    username = models.CharField(max_length=255)
 
     class Meta:
         verbose_name = _('Noosfero Admin')
@@ -89,3 +118,21 @@ class NoosferoArticle(Collaboration):
     class Meta:
         verbose_name = _('Article')
         verbose_name_plural = _('Articles')
+
+
+class NoosferoSoftwareCommunity(models.Model):
+    id = models.IntegerField(primary_key=True)
+    type = u'software_community'
+    icon_name = u'display'
+    finality = models.CharField(max_length=255)
+    repository_link = models.CharField(max_length=255, null=True)
+    features = models.TextField(null=True)
+    license_info = models.CharField(max_length=255)
+    software_languages = ListField()
+    software_databases = ListField()
+    operating_system_names = ListField()
+    community = models.ForeignKey('NoosferoCommunity')
+
+    class Meta:
+        verbose_name = _("Software Community")
+        verbose_name_plural = _("Software Communities")

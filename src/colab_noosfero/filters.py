@@ -40,4 +40,13 @@ def get_filters(request):
                 ),
             )
         },
+        'software_community': {
+            'name': _(u'Software Community'),
+            'icon': 'folder-open',
+            'fields': (
+                ('finality', _(u'Finality'), request.get('finality')),
+                ('features', _(u'Features'), request.get('features')),
+                ('tags', _(u'Tags'), request.get('tags')),
+            )
+        },
     }

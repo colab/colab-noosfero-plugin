@@ -5,7 +5,8 @@ import string
 from haystack import indexes
 from haystack.utils import log as logging
 
-from .models import (NoosferoArticle, NoosferoCommunity)
+from colab_noosfero.models import (NoosferoArticle, NoosferoCommunity,
+                                   NoosferoSoftwareCommunity)
 
 
 logger = logging.getLogger('haystack')
@@ -49,6 +50,7 @@ class NoosferoCommunityIndex(indexes.SearchIndex, indexes.Indexable):
 class NoosferoArticleIndex(indexes.SearchIndex, indexes.Indexable):
 
     text = indexes.CharField(document=True, use_template=True, stored=False)
+    type = indexes.CharField()
     title = indexes.CharField(model_attr='title')
     username = indexes.CharField(model_attr='username', null=True)
     body = indexes.CharField(model_attr='body', null=True)
@@ -70,3 +72,41 @@ class NoosferoArticleIndex(indexes.SearchIndex, indexes.Indexable):
 
     def prepare_type(self, obj):
         return u'articles'
+
+
+class NoosferoSoftwareCommunitiesIndex(indexes.SearchIndex, indexes.Indexable):
+
+    text = indexes.CharField(document=True, use_template=True, stored=False)
+    type = indexes.CharField()
+    icon_name = indexes.CharField()
+    finality = indexes.CharField(model_attr='finality')
+    repository_link = indexes.CharField(model_attr='repository_link',
+                                        null=True)
+    features = indexes.CharField(model_attr='features', null=True)
+    license = indexes.CharField(model_attr='license_info', null=True)
+    tags = indexes.MultiValueField()
+    community = indexes.CharField()
+    community_url = indexes.CharField()
+    community_thumb = indexes.CharField()
+
+    def get_model(self):
+        return NoosferoSoftwareCommunity
+
+    def prepare_icon_name(self, obj):
+        return u'file'
+
+    def prepare_type(self, obj):
+        return u'software_community'
+
+    def prepare_tags(self, obj):
+        return obj.software_languages + obj.software_databases \
+            + obj.operating_system_names
+
+    def prepare_community(self, obj):
+        return obj.community.name
+
+    def prepare_community_url(self, obj):
+        return obj.community.url
+
+    def prepare_community_thumb(self, obj):
+        return obj.community.thumb_url

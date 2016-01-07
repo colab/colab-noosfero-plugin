@@ -9,10 +9,10 @@ from django.db.models.fields import DateTimeField
 
 from colab.plugins.data import PluginDataImporter
 
-from .models import (NoosferoArticle, NoosferoCommunity,
-                     NoosferoCategory, NoosferoSoftwareAdmin)
-
 from colab.plugins.models import TimeStampPlugin
+from colab_noosfero.models import (NoosferoArticle, NoosferoCommunity,
+                                   NoosferoCategory, NoosferoSoftwareCommunity,
+                                   NoosferoSoftwareAdmin)
 
 LOGGER = logging.getLogger('colab_noosfero')
 
@@ -61,6 +61,27 @@ class NoosferoDataImporter(PluginDataImporter):
                         element["profile"]["identifier"]
                     continue
 
+                if field.name == "license_info":
+                    _object.license_info = element["license_info"]["version"]
+                    continue
+
+                if field.name == "software_languages":
+                    _object.software_languages = element["software_languages"]
+                    continue
+
+                if field.name == "software_databases":
+                    _object.software_databases = element["software_databases"]
+                    continue
+
+                if field.name == "operating_system_names":
+                    _object.operating_system_names = element[
+                        "operating_system_names"]
+                    continue
+
+                if field.name == "community":
+                    _object.community_id = element["community_id"]
+                    continue
+
                 if isinstance(field, DateTimeField):
                     value = parse(element[field.name])
                 else:
@@ -93,41 +114,38 @@ class NoosferoDataImporter(PluginDataImporter):
             community.save()
 
             if 'categories' in element:
-                for category_json in element["categories"]:
-                    category = NoosferoCategory.objects.get_or_create(
-                        id=category_json["id"], name=category_json["name"])[0]
-                    community.categories.add(category.id)
+                self.fetch_community_categories(community,
+                                                element["categories"])
+
+            if 'admins' in element:
+                self.fetch_software_admins(community, element["admins"])
 
         self.save_last_update(json_data[-1]['updated_at'], 'NoosferoCommunity')
 
-    def fetch_software_admins(self):
+    def fetch_community_categories(self, community, json_data):
+        for element in json_data:
+            category = NoosferoCategory.objects.get_or_create(
+                id=element["id"], name=element["name"])[0]
+            community.categories.add(category.id)
+
+    def fetch_software_admins(self, community, json_data):
+        for element in json_data:
+            software_admin = NoosferoSoftwareAdmin.objects.get_or_create(
+                id=element["id"], name=element["name"],
+                username=element["username"])[0]
+            community.admins.add(software_admin.id)
+
+    def fetch_software_communities(self):
         url = '/api/v1/software_communities'
-        timestamp = TimeStampPlugin.get_last_updated('NoosferoSoftwareAdmin')
+        timestamp = TimeStampPlugin.get_last_updated(
+            'NoosferoSoftwareCommunity')
         json_data = self.get_json_data(url, 1, timestamp=timestamp,
                                        order="updated_at ASC")
-
-        if len(json_data) == 0:
-            return
-
-        json_data = json_data['softwares']
+        json_data = json_data['software_infos']
         for element in json_data:
-
-            if not element['community']:
-                continue
-
-            software_name = element['community']['identifier']
-            community = NoosferoCommunity.objects.filter(
-                identifier=software_name).first()
-
-            for admin in element['community']['admins']:
-                instance = NoosferoSoftwareAdmin.objects.get_or_create(
-                    id=admin['id'])[0]
-                instance.name = admin['name']
-                instance.save()
-                community.admins.add(instance.id)
-
-        self.save_last_update(json_data[-1]['community']['updated_at'],
-                              'NoosferoSoftwareAdmin')
+            software_communty = NoosferoSoftwareCommunity()
+            self.fill_object_data(element, software_communty)
+            software_communty.save()
 
     def fetch_articles(self):
         url = '/api/v1/articles'
@@ -162,5 +180,5 @@ class NoosferoDataImporter(PluginDataImporter):
         LOGGER.info("Importing Articles")
         self.fetch_articles()
 
-        LOGGER.info("Importing Software Admins")
-        self.fetch_software_admins()
+        LOGGER.info("Importing Software Communities")
+        self.fetch_software_communities()
