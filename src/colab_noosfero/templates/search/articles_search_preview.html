@@ -2,7 +2,7 @@
 {% load urls set_var %}
 
 {% block content %}
-  {% profile_url result.username|default_if_none:"" as user_url%}
+  {% profile_url result.username as user_url %}
   {% set 'author' user_url %}
   {% set 'title' result.title %}
   {% set 'modified' result.created_at %}
