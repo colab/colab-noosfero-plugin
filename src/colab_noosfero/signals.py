@@ -7,10 +7,12 @@ from colab.signals.signals import send
 
 @receiver(pre_save, sender=NoosferoSoftwareCommunity)
 def verify_community_creation(sender, **kwargs):
-    community = kwargs.get('instance')
+    software_community = kwargs.get('instance')
     try:
-        NoosferoSoftwareCommunity.objects.get(pk=community.id)
+        NoosferoSoftwareCommunity.objects.get(pk=software_community.id)
     except ObjectDoesNotExist:
-        send('community_creation', 'noosfero', community=sender)
+        send('community_creation', 'noosfero',
+             community=software_community.community)
     else:
-        send('community_updated', 'noosfero', community=sender)
+        send('community_updated', 'noosfero',
+             community=software_community.community)
