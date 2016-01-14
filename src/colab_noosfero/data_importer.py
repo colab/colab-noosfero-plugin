@@ -40,7 +40,7 @@ class NoosferoDataImporter(PluginDataImporter):
             json_data = json.load(data)
         except urllib2.URLError:
             LOGGER.exception("Connection timeout: " + url)
-            json_data = []
+            json_data = {}
 
         return json_data
 
