@@ -100,7 +100,7 @@ class NoosferoDataImporter(PluginDataImporter):
         json_data = self.get_json_data(url, 1, timestamp=timestamp,
                                        order="updated_at ASC")
 
-        if len(json_data) == 0:
+        if not len(json_data) or not len(json_data['communities']):
             return
 
         json_data = json_data['communities']
@@ -110,7 +110,11 @@ class NoosferoDataImporter(PluginDataImporter):
 
             if element['image']:
                 community.thumb_url = element['image']['thumb_url']
-            community.save()
+
+            try:
+                community.save()
+            except:
+                continue
 
             if 'categories' in element:
                 self.fetch_community_categories(community,
@@ -140,11 +144,22 @@ class NoosferoDataImporter(PluginDataImporter):
             'NoosferoSoftwareCommunity')
         json_data = self.get_json_data(url, 1, timestamp=timestamp,
                                        order="updated_at ASC")
+
+        if not len(json_data) or not len(json_data['software_infos']):
+            return
+
         json_data = json_data['software_infos']
         for element in json_data:
-            software_communty = NoosferoSoftwareCommunity()
-            self.fill_object_data(element, software_communty)
-            software_communty.save()
+            software_community = NoosferoSoftwareCommunity()
+            self.fill_object_data(element, software_community)
+
+            try:
+                software_community.save()
+            except:
+                continue
+
+        self.save_last_update(json_data[-1]['updated_at'],
+                              'NoosferoSoftwareCommunity')
 
     def fetch_articles(self):
         url = '/api/v1/articles'
@@ -152,15 +167,18 @@ class NoosferoDataImporter(PluginDataImporter):
         json_data = self.get_json_data(url, 1, timestamp=timestamp,
                                        order="updated_at ASC")
 
-        if len(json_data) == 0:
+        if not len(json_data) or not len(json_data['articles']):
             return
 
         json_data = json_data['articles']
-
         for element in json_data:
             article = NoosferoArticle()
             self.fill_object_data(element, article)
-            article.save()
+
+            try:
+                article.save()
+            except:
+                continue
 
             for category_json in element["categories"]:
                 category = NoosferoCategory.objects.get_or_create(
