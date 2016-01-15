@@ -61,8 +61,16 @@ class NoosferoDataImporterTest(TestCase):
     def test_fetch_software_admin(self, mock_json):
         mock_json.side_effect = [data.community_json, []]
         self.api.fetch_communities()
-        mock_json.side_effect = [data.software_admins_json, []]
-        self.api.fetch_software_admins()
+
+        community_id = 69
+        community = NoosferoCommunity.objects.filter(id=community_id)[0]
+
+        admins_json = filter(lambda community: community['id'] == community_id,
+                             data.community_json['communities'])[0]
+        admins_json = admins_json['admins']
+
+        mock_json.side_effect = [admins_json, []]
+        self.api.fetch_software_admins(community, admins_json)
 
         size_admins= NoosferoSoftwareAdmin.objects.count()
         self.assertEqual(size_admins, 2)
