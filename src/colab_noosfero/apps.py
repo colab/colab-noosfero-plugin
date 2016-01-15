@@ -14,4 +14,4 @@ class NoosferoPluginAppConfig(ColabPluginAppConfig):
         register_signal(self.short_name, self.registered_signals)
 
     def ready(self):
-        import colab_noosfero.signals
+        import colab_noosfero.signals  # NOQA
