@@ -13,3 +13,4 @@ install:
 script:
   - python setup.py test
   - flake8 src/colab_noosfero
+  - flake8 tests
