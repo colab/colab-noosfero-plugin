@@ -1,12 +1,15 @@
-
-colab_apps = {'colab_noosfero':
-              {'menu_title': None,
-               'private_token': 'token',
-               'upstream': 'localhost',
-               'urls':
-               {'include': 'colab_noosfero.urls',
-                'namespace': 'social',
-                'prefix': 'social/'}}}
+colab_apps = {
+    'colab_noosfero': {
+        'menu_title': None,
+        'private_token': 'token',
+        'upstream': 'localhost',
+        'urls': {
+            'include': 'colab_noosfero.urls',
+            'namespace': 'social',
+            'prefix': 'social/'
+        }
+    }
+}
 
 community_json = {
    "communities":[
@@ -22,6 +25,7 @@ community_json = {
          "admins":[
             {
                "name":"admin admin",
+               "username":"admin_admin",
                "id":68
             }
          ],
@@ -61,6 +65,7 @@ community_json = {
          "admins":[
             {
                "name":"user admin",
+               "username":"admin_admin",
                "id":69
             }
          ],
@@ -266,102 +271,6 @@ articles_json  = {
                "path":"blog/feed"
             }
          ]
-      }
-   ]
-}
-
-software_admins_json = {
-   "softwares":[
-      {
-         "community":{
-            "identifier":"software_test_community",
-            "name":"Software Test Community",
-            "id":71,
-            "created_at":"2015/10/06 17:43:45",
-            "updated_at":"2015/10/06 17:49:51",
-            "image":None,
-            "region":None,
-            "description":None,
-            "admins":[
-               {
-                  "name":"admin admin",
-                  "id":68
-               }
-            ],
-            "categories":[
-            ],
-            "members":[
-               {
-                  "identifier":"admin",
-                  "name":"admin admin",
-                  "id":68,
-                  "created_at":"2015/09/29 14:23:09",
-                  "updated_at":"2015/09/29 14:23:12",
-                  "image":None,
-                  "region":None,
-                  "user":{
-                     "id":53,
-                     "login":"admin"
-                  }
-               }
-            ]
-         },
-         "software_info":{
-            "id":3,
-            "finality":"teste",
-            "repository_link":"https://localhost/\u003Cyour-repository"
-                              "\u003E/software_test_community",
-            "public_software":False
-         }
-      },
-      {
-         "community":{
-            "identifier":"software_test_community_2",
-            "name":"Software TEST Community",
-            "id":69,
-            "created_at":"2015/09/29 14:36:58",
-            "updated_at":"2015/10/28 13:34:41",
-            "image":{
-               "url":"/image_uploads/0000/0001/gravatar_1.jpg",
-               "icon_url":"/image_uploads/0000/0001/gravatar_1_icon.jpg",
-               "minor_url":"/image_uploads/0000/0001/gravatar_1_minor.jpg",
-               "portrait_url":"/image_uploads/0000/0001/gravatar_1"
-                              "_portrait.jpg",
-               "thumb_url":"/image_uploads/0000/0001/gravatar_1_thumb.jpg"
-            },
-            "region":None,
-            "description":None,
-            "admins":[
-               {
-                  "name":"user admin",
-                  "id":69
-               }
-            ],
-            "categories":[
-            ],
-            "members":[
-               {
-                  "identifier":"user",
-                  "name":"user admin",
-                  "id":69,
-                  "created_at":"2015/09/29 14:23:09",
-                  "updated_at":"2015/09/29 14:23:12",
-                  "image":None,
-                  "region":None,
-                  "user":{
-                     "id":54,
-                     "login":"user"
-                  }
-               }
-            ]
-         },
-         "software_info":{
-            "id":2,
-            "finality":"test",
-            "repository_link":"https://localhost/\u003Cyour-repository"
-                              "\u003E/software_test_community_2",
-            "public_software":False
-         }
       }
    ]
 }
