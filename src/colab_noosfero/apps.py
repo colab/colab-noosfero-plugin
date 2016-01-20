@@ -1,7 +1,7 @@
 from colab.plugins.utils.apps import ColabPluginAppConfig
 from colab.signals.signals import register_signal
-from django.contrib.auth.signals import user_logged_in
-from colab_noosfero.tasks import authenticate_user
+from django.contrib.auth.signals import user_logged_in, user_logged_out
+from colab_noosfero.tasks import authenticate_user, logout_user
 
 
 class NoosferoPluginAppConfig(ColabPluginAppConfig):
@@ -20,3 +20,4 @@ class NoosferoPluginAppConfig(ColabPluginAppConfig):
 
     def connect_signal(self):
         user_logged_in.connect(authenticate_user)
+        user_logged_out.connect(logout_user)
