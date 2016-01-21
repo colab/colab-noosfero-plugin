@@ -20,8 +20,9 @@ def authenticate_user(sender, user, request, **kwargs):
         remote_user_data, sort_keys=True)}
 
     noosfero_request = requests.get(url, headers=headers)
-    request.COOKIES.set('_noosfero_session',
-                        noosfero_request.cookies.get('_noosfero_session'))
+    if noosfero_request.status_code == 200:
+        request.COOKIES.set('_noosfero_session',
+                            noosfero_request.cookies.get('_noosfero_session'))
 
 
 def logout_user(sender, user, request, **kwargs):
