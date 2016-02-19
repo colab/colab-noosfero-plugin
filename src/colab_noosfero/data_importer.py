@@ -100,7 +100,7 @@ class NoosferoDataImporter(PluginDataImporter):
         json_data = self.get_json_data(url, 1, timestamp=timestamp,
                                        order="updated_at ASC")
 
-        if not len(json_data) or not len(json_data['communities']):
+        if not len(json_data) or not len(json_data.get('communities', [])):
             return
 
         json_data = json_data['communities']
@@ -145,7 +145,7 @@ class NoosferoDataImporter(PluginDataImporter):
         json_data = self.get_json_data(url, 1, timestamp=timestamp,
                                        order="updated_at ASC")
 
-        if not len(json_data) or not len(json_data['software_infos']):
+        if not len(json_data) or not len(json_data.get('software_infos', [])):
             return
 
         json_data = json_data['software_infos']
@@ -167,7 +167,7 @@ class NoosferoDataImporter(PluginDataImporter):
         json_data = self.get_json_data(url, 1, timestamp=timestamp,
                                        order="updated_at ASC")
 
-        if not len(json_data) or not len(json_data['articles']):
+        if not len(json_data) or not len(json_data.get('articles', [])):
             return
 
         json_data = json_data['articles']
