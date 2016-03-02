@@ -31,7 +31,7 @@ class NoosferoDataImporter(PluginDataImporter):
 
         return u'{}{}?{}'.format(upstream, path, params)
 
-    def get_json_data(self, api_url, page, per_page=1000, **kwargs):
+    def get_json_data(self, api_url, page, per_page=250, **kwargs):
         url = self.get_request_url(api_url, per_page=per_page, page=page,
                                    **kwargs)
 
@@ -91,39 +91,49 @@ class NoosferoDataImporter(PluginDataImporter):
                 continue
             except TypeError:
                 continue
+            except:
+                continue
 
         return _object
 
     def fetch_communities(self):
         url = '/api/v1/communities'
         timestamp = TimeStampPlugin.get_last_updated('NoosferoCommunity')
-        json_data = self.get_json_data(url, 1, timestamp=timestamp,
-                                       order="updated_at ASC")
 
-        if not len(json_data) or not len(json_data.get('communities', [])):
-            return
+        page = 1
+        can_updated_timestamp = True
+        while True:
+            json_data = self.get_json_data(url, page, timestamp=timestamp,
+                                           order="updated_at DESC")
 
-        json_data = json_data['communities']
-        for element in json_data:
-            community = NoosferoCommunity()
-            self.fill_object_data(element, community)
+            if not len(json_data) or not len(json_data.get('communities', [])):
+                break
 
-            if element['image']:
-                community.thumb_url = element['image']['thumb_url']
+            json_data = json_data['communities']
+            if can_updated_timestamp:
+                self.save_last_update(json_data[0]['updated_at'],
+                                      'NoosferoCommunity')
+                can_updated_timestamp = False
 
-            try:
-                community.save()
-            except:
-                continue
+            for element in json_data:
+                community = NoosferoCommunity()
+                self.fill_object_data(element, community)
 
-            if 'categories' in element:
-                self.fetch_community_categories(community,
-                                                element["categories"])
+                if element['image']:
+                    community.thumb_url = element['image']['thumb_url']
 
-            if 'admins' in element:
-                self.fetch_software_admins(community, element["admins"])
+                try:
+                    community.save()
+                except:
+                    continue
 
-        self.save_last_update(json_data[-1]['updated_at'], 'NoosferoCommunity')
+                if 'categories' in element:
+                    self.fetch_community_categories(community,
+                                                    element["categories"])
+
+                if 'admins' in element:
+                    self.fetch_software_admins(community, element["admins"])
+            page += 1
 
     def fetch_community_categories(self, community, json_data):
         for element in json_data:
@@ -142,50 +152,66 @@ class NoosferoDataImporter(PluginDataImporter):
         url = '/api/v1/software_communities'
         timestamp = TimeStampPlugin.get_last_updated(
             'NoosferoSoftwareCommunity')
-        json_data = self.get_json_data(url, 1, timestamp=timestamp,
-                                       order="updated_at ASC")
 
-        if not len(json_data) or not len(json_data.get('software_infos', [])):
-            return
+        can_updated_timestamp = True
+        page = 1
+        while True:
+            json_data = self.get_json_data(url, page, timestamp=timestamp,
+                                           order="updated_at DESC")
 
-        json_data = json_data['software_infos']
-        for element in json_data:
-            software_community = NoosferoSoftwareCommunity()
-            self.fill_object_data(element, software_community)
+            if not len(json_data) or not len(json_data.get('software_infos',
+                                             [])):
+                break
 
-            try:
-                software_community.save()
-            except:
-                continue
+            json_data = json_data['software_infos']
+            if can_updated_timestamp:
+                self.save_last_update(json_data[0]['updated_at'],
+                                      'NoosferoSoftwareCommunity')
+                can_updated_timestamp = False
 
-        self.save_last_update(json_data[-1]['updated_at'],
-                              'NoosferoSoftwareCommunity')
+            for element in json_data:
+                software_community = NoosferoSoftwareCommunity()
+                self.fill_object_data(element, software_community)
+
+                try:
+                    software_community.save()
+                except:
+                    continue
+            page += 1
 
     def fetch_articles(self):
         url = '/api/v1/articles'
         timestamp = TimeStampPlugin.get_last_updated('NoosferoArticle')
-        json_data = self.get_json_data(url, 1, timestamp=timestamp,
-                                       order="updated_at ASC")
 
-        if not len(json_data) or not len(json_data.get('articles', [])):
-            return
+        can_updated_timestamp = True
+        page = 1
+        while True:
+            json_data = self.get_json_data(url, page, timestamp=timestamp,
+                                           order="updated_at DESC")
 
-        json_data = json_data['articles']
-        for element in json_data:
-            article = NoosferoArticle()
-            self.fill_object_data(element, article)
+            if not len(json_data) or not len(json_data.get('articles', [])):
+                break
 
-            try:
-                article.save()
-            except:
-                continue
+            json_data = json_data['articles']
+            if can_updated_timestamp:
+                self.save_last_update(json_data[0]['updated_at'],
+                                      "NoosferoArticle")
+                can_updated_timestamp = False
 
-            for category_json in element["categories"]:
-                category = NoosferoCategory.objects.get_or_create(
-                    id=category_json["id"], name=category_json["name"])[0]
-                article.categories.add(category.id)
+            for element in json_data:
+                article = NoosferoArticle()
+                self.fill_object_data(element, article)
 
-        self.save_last_update(json_data[-1]['updated_at'], "NoosferoArticle")
+                try:
+                    article.save()
+                except:
+                    continue
+
+                for category_json in element["categories"]:
+                    category = NoosferoCategory.objects.get_or_create(
+                        id=category_json["id"], name=category_json["name"])[0]
+                    article.categories.add(category.id)
+            page += 1
 
     def save_last_update(self, last_updated, class_name):
         TimeStampPlugin.update_timestamp(class_name, last_updated=last_updated)
