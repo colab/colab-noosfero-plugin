@@ -1,0 +1,40 @@
+<rules
+    xmlns="http://namespaces.plone.org/diazo"
+    xmlns:css="http://namespaces.plone.org/diazo/css"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+    version='2.0'>
+
+    <xsl:variable name="username" select="str:replace(//a/@href[(contains(., '/social/myprofile/'))], '/social/myprofile/', '')" />
+
+    <xsl:template match="form/@enctype[contains(., 'multipart')]"/>
+    <xsl:template match="form/@action[contains(., '/social/')]">
+        <xsl:attribute name="action">/account/<xsl:value-of select="$username"/>/edit?path=<xsl:value-of select='.'/>/#noosfero_profile</xsl:attribute>
+    </xsl:template>
+
+    <before theme-children="/html/head" content-children="/html/head" />
+    <before css:theme-children="#noosfero-content" css:content-children="body" />
+
+    <merge attributes="class" css:theme="html" css:content="html" />
+    <merge attributes="class" css:theme="body" css:content="body" />
+
+    <drop css:content="head link[rel='shortcut icon']" />
+
+    <drop css:theme="link[href^='/static/third-party/bootstrap/css/bootstrap.min']" />
+    <drop css:theme="link[href^='/static/third-party/font-awesome/css/font-awesome.min']" />
+    <!-- <drop css:theme="link[href^='/static/css/screen']" /> -->
+
+    <drop content="div[@class='blocks'][2]" />
+    <drop content="div[@class='blocks'][1]" />
+    <drop content="div[@class='main-content']/h1" />
+    <drop content="div[@id='delete-profile']" />
+    <drop content="div[@id='profile-is-template']" />
+
+    <drop css:content="script[src^='/social/designs/themes/noosfero-spb-theme/theme.js']" />
+    <drop css:content="meta[http-equiv^=Content-Type]" />
+    <drop css:content="title" />
+    <drop css:content="#barra-brasil" />
+    <drop css:content="#user" />
+    <drop css:content="#theme-footer" />
+    <drop css:content="#homepage-link" />
+    <drop css:content=".header-content" />
+</rules>
