@@ -99,8 +99,11 @@ class NoosferoSoftwareCommunitiesIndex(indexes.SearchIndex, indexes.Indexable):
         return u'software_community'
 
     def prepare_tags(self, obj):
-        return obj.software_languages + obj.software_databases \
-            + obj.operating_system_names
+        operating_systems = []
+        for op_system in obj.operating_system_names:
+            operating_systems.append(op_system.get('name', ''))
+
+        return ' / '.join(operating_systems)
 
     def prepare_community(self, obj):
         return obj.community.name
