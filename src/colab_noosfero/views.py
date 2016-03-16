@@ -6,19 +6,16 @@ from django.conf import settings
 from colab.plugins.views import ColabProxyView
 
 
-class NoosferoProxyView(ColabProxyView,):
+class NoosferoProxyView(ColabProxyView):
     app_label = 'colab_noosfero'
     diazo_theme_template = 'proxy/noosfero.html'
     rewrite = (
         ('^/social/account/login(.*)$', r'{}\1'.format(settings.LOGIN_URL)),
     )
 
-    def post(self, request, *args, **kwargs):
-        result = super(NoosferoProxyView, self).post(request, *args, **kwargs)
-        return result
-
-    def get(self, request, *args, **kwargs):
-        return super(NoosferoProxyView, self).get(request, *args, **kwargs)
+    def dispatch(self, request, *args, **kwargs):
+        self.request = request
+        return super(NoosferoProxyView, self).dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super(NoosferoProxyView, self).get_context_data(**kwargs)
