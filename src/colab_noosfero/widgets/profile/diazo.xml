@@ -30,11 +30,16 @@
     <drop content="div[@id='profile-is-template']" />
 
     <drop css:content="script[src^='/social/designs/themes/noosfero-spb-theme/theme.js']" />
-    <drop css:content="meta[http-equiv^=Content-Type]" />
+    <!-- <drop css:content="meta[http-equiv^=Content-Type]" /> -->
     <drop css:content="title" />
     <drop css:content="#barra-brasil" />
     <drop css:content="#user" />
     <drop css:content="#theme-footer" />
     <drop css:content="#homepage-link" />
     <drop css:content=".header-content" />
+
+    <!--Drop username and email and change_picture-->
+    <drop css:content=".field-with-privacy-selector"/>
+    <drop css:content="#profile_change_picture"/>
+    <drop css:content="#profile_change_picture_title"/>
 </rules>
