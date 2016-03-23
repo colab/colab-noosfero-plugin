@@ -14,7 +14,7 @@ upstream = 'localhost'
 
 urls = {
     'include': 'colab_noosfero.urls',
-    'prefix': '^social/',
+    'prefix': '^social',
     'login': '/social/account/login',
 }
 

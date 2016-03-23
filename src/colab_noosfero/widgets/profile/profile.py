@@ -1,8 +1,7 @@
 from django.utils.translation import ugettext_lazy as _
 from colab_noosfero.views import NoosferoProxyView, NoosferoProfileProxyView
-from colab.widgets.widget_profile import ProfileWidget
-import re
-from django.utils.safestring import mark_safe
+from colab.widgets.profile_widget import ProfileWidget
+
 
 class NoosferoProfileWidget(NoosferoProxyView, ProfileWidget):
     identifier = 'noosfero_profile'
