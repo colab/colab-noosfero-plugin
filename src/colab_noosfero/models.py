@@ -102,7 +102,7 @@ class NoosferoArticle(Collaboration):
 
     @property
     def url(self):
-        return u'/{prefix}/{profile}/{path}'.format(
+        return u'/{prefix}/{profile}/{path}?view=true'.format(
             prefix=get_prefix(),
             profile=self.profile_identifier,
             path=self.path
