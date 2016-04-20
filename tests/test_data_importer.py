@@ -4,7 +4,8 @@ from django.test.utils import override_settings
 
 from colab_noosfero.data_importer import NoosferoDataImporter
 from colab_noosfero.models import (NoosferoSoftwareAdmin,
-                                   NoosferoCommunity, NoosferoArticle)
+                                   NoosferoCommunity, NoosferoArticle,
+                                   NoosferoComment)
 import data
 from mock import patch
 
@@ -54,6 +55,10 @@ class NoosferoDataImporterTest(TestCase):
             title="Gallery").first()
         self.assertEqual(211, article.id)
         self.assertIsNone(article.body)
+
+    def test_fetch_comments(self):
+        self.api.import_comments(data.comments, 1)
+        self.assertEqual(2, NoosferoComment.objects.count())
 
     @patch.object(NoosferoDataImporter, 'get_json_data')
     def test_fetch_software_admin(self, mock_json):

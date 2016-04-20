@@ -46,6 +46,7 @@ class NoosferoCommunityIndex(indexes.SearchIndex, indexes.Indexable):
     def prepare_type(self, obj):
         return u'community'
 
+
 class NoosferoCommentIndex(indexes.SearchIndex, indexes.Indexable):
 
     text = indexes.CharField(document=True, use_template=True, stored=False)

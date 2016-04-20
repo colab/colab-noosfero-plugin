@@ -111,6 +111,8 @@ articles_json  = {
          },
          "categories":[
          ],
+	 "comments":[
+	 ],
          "image":None,
          "votes_for":0,
          "votes_against":0,
@@ -149,6 +151,8 @@ articles_json  = {
          },
          "categories":[
          ],
+	 "comments":[
+	 ],
          "image":None,
          "votes_for":0,
          "votes_against":0,
@@ -182,6 +186,8 @@ articles_json  = {
             },
             "categories":[
             ],
+	    "comments":[
+	    ],
             "image":None,
             "votes_for":0,
             "votes_against":0,
@@ -219,6 +225,8 @@ articles_json  = {
          },
          "categories":[
          ],
+	 "comments":[
+	 ],
          "image":None,
          "votes_for":0,
          "votes_against":0,
@@ -255,6 +263,8 @@ articles_json  = {
                },
                "categories":[
                ],
+	       "comments":[
+	       ],
                "image":None,
                "votes_for":0,
                "votes_against":0,
@@ -274,3 +284,41 @@ articles_json  = {
       }
    ]
 }
+comments = [
+	{
+	  "body": "test_body_1",
+	  "title": None,
+	  "id": 1,
+	  "created_at": "2016/04/18 18:08:09",
+	  "author": {
+		"identifier": "adminuser",
+		"name": "adminuser",
+		"id": 54,
+		"created_at": "2016/04/18 11:51:21",
+		"updated_at": "2016/04/18 11:51:21",
+		"additional_data": {},
+		"image": None,
+		"region": None,
+		"type": "Person"
+	  },
+	  "reply_of": None
+	},
+	{
+	  "body": "test_body_2",
+	  "title": None,
+	  "id": 2,
+	  "created_at": "2016/04/20 13:32:57",
+	  "author": {
+		"identifier": "adminuser",
+		"name": "adminuser",
+		"id": 54,
+		"created_at": "2016/04/18 11:51:21",
+		"updated_at": "2016/04/18 11:51:21",
+		"additional_data": {},
+		"image": None,
+		"region": None,
+		"type": "Person"
+	  },
+	  "reply_of": None
+	},
+]

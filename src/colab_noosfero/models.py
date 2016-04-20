@@ -57,11 +57,11 @@ class NoosferoComment(models.Model):
 
     @property
     def url(self):
-	return self.article.url
+        return self.article.url
 
     @property
     def title(self):
-	return self.article.title
+        return self.article.title
 
 
 class NoosferoSoftwareAdmin(models.Model):
