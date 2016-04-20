@@ -6,7 +6,7 @@ from haystack import indexes
 from haystack.utils import log as logging
 
 from colab_noosfero.models import (NoosferoArticle, NoosferoCommunity,
-                                   NoosferoSoftwareCommunity)
+                                   NoosferoSoftwareCommunity, NoosferoComment)
 
 
 logger = logging.getLogger('haystack')
@@ -45,6 +45,27 @@ class NoosferoCommunityIndex(indexes.SearchIndex, indexes.Indexable):
 
     def prepare_type(self, obj):
         return u'community'
+
+class NoosferoCommentIndex(indexes.SearchIndex, indexes.Indexable):
+
+    text = indexes.CharField(document=True, use_template=True, stored=False)
+    type = indexes.CharField()
+    title = indexes.CharField(model_attr='title')
+    username = indexes.CharField(model_attr='username', null=True)
+    body = indexes.CharField(model_attr='body', null=True)
+    url = indexes.CharField(model_attr='url', indexed=False)
+    icon_name = indexes.CharField()
+    type = indexes.CharField(model_attr='type')
+    created_at = indexes.DateTimeField(model_attr='created_at', null=True)
+
+    def get_model(self):
+        return NoosferoComment
+
+    def prepare_icon_name(self, obj):
+        return u'file'
+
+    def prepare_type(self, obj):
+        return u'comment'
 
 
 class NoosferoArticleIndex(indexes.SearchIndex, indexes.Indexable):

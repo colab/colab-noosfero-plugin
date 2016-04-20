@@ -12,7 +12,7 @@ from colab.plugins.data import PluginDataImporter
 from colab.plugins.models import TimeStampPlugin
 from colab_noosfero.models import (NoosferoArticle, NoosferoCommunity,
                                    NoosferoCategory, NoosferoSoftwareCommunity,
-                                   NoosferoSoftwareAdmin)
+                                   NoosferoSoftwareAdmin, NoosferoComment)
 
 LOGGER = logging.getLogger('colab_noosfero')
 
@@ -187,7 +187,7 @@ class NoosferoDataImporter(PluginDataImporter):
         page = 1
         while True:
             json_data = self.get_json_data(url, page, timestamp=timestamp,
-                                           order="updated_at DESC")
+                                           order="updated_at DESC", show_comments="true")
 
             if not len(json_data) or not len(json_data.get('articles', [])):
                 break
@@ -207,6 +207,8 @@ class NoosferoDataImporter(PluginDataImporter):
                 except:
                     continue
 
+		self.import_comments(element["comments"], element["id"])
+
                 for category_json in element["categories"]:
                     category = NoosferoCategory.objects.get_or_create(
                         id=category_json["id"], name=category_json["name"])[0]
@@ -215,6 +217,12 @@ class NoosferoDataImporter(PluginDataImporter):
 
     def save_last_update(self, last_updated, class_name):
         TimeStampPlugin.update_timestamp(class_name, last_updated=last_updated)
+
+    def import_comments(self, comments, article_id):
+	for comment in comments:
+	    noosfero_comment = self.fill_object_data(comment, NoosferoComment())
+	    noosfero_comment.article_id = article_id
+	    noosfero_comment.save()
 
     def fetch_data(self):
         LOGGER.info("Importing Communities")

@@ -45,6 +45,25 @@ class NoosferoCategory(models.Model):
         return u"{}-{}".format(self.id, self.name)
 
 
+class NoosferoComment(models.Model):
+
+    id = models.IntegerField(primary_key=True)
+    type = u'comment'
+    icon_name = u'file'
+    body = models.TextField(null=True, blank=True)
+    username = models.CharField(max_length=255, null=True)
+    created_at = models.DateTimeField(blank=True)
+    article = models.ForeignKey('NoosferoArticle')
+
+    @property
+    def url(self):
+	return self.article.url
+
+    @property
+    def title(self):
+	return self.article.title
+
+
 class NoosferoSoftwareAdmin(models.Model):
 
     id = models.IntegerField(primary_key=True)
