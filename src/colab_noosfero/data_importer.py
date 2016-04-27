@@ -217,6 +217,8 @@ class NoosferoDataImporter(PluginDataImporter):
                     article.categories.add(category.id)
             page += 1
 
+
+
     def fetch_users(self):
         url = '/api/v1/people'
         timestamp = TimeStampPlugin.get_last_updated('NoosferoUser')

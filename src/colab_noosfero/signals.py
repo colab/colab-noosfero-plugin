@@ -10,8 +10,7 @@ from colab.signals.signals import send
 from .models import NoosferoUser, NoosferoSoftwareCommunity
 from colab.accounts.signals import (user_basic_info_updated)
 
-LOGGER = logging.getLogger('colab.plugins.gitlab')
-
+LOGGER = logging.getLogger('colab.plugins.noosfero')
 
 @receiver(pre_save, sender=NoosferoSoftwareCommunity)
 def verify_community_creation(sender, **kwargs):
@@ -50,13 +49,11 @@ def update_basic_info_noosfero_user(sender, **kwargs):
     if update_email:
         params['person[email]'] = user.email
 
-    error_msg = u'Error trying to update "%s"\'s basic info on'
-    'Noosfero. Reason: %s'
-
+    error_msg = u'Error trying to update "%s"\'s basic info on Noosfero. Reason: %s'
     try:
         headers = {'Remote-User': user.username}
         response = requests.post(users_endpoint, params=params,
-                                 verify=verify_ssl, headers=headers)
+                                 verify=verify_ssl,headers=headers)
     except Exception as excpt:
         reason = 'Request to API failed ({})'.format(excpt)
         LOGGER.error(error_msg, user.username, reason)
