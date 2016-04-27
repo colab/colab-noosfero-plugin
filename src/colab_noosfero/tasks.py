@@ -7,7 +7,7 @@ logger = logging.getLogger(__name__)
 def authenticate_user(sender, user, request, **kwargs):
     proxy_view = NoosferoProxyView()
     try:
-        noosfero_response = proxy_view.dispatch(request, '/')
+        noosfero_response = proxy_view.dispatch(request, '/profile')
     except MaxRetryError:
         logger.info("Couldn't connect to noosfero")
         return
