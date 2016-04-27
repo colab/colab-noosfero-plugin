@@ -27,8 +27,6 @@ menu_urls = (
         kwargs={'path': 'search/people'}, auth=False),
     url(display=_('Communities'), viewname='noosfero',
         kwargs={'path': 'search/communities'}, auth=False),
-    url(display=_('Profile'), viewname='noosfero',
-        kwargs={'path': 'profile/~/'}, auth=True),
     url(display=_('Control Panel'), viewname='noosfero',
         kwargs={'path': 'myprofile/~/'}, auth=True),
 

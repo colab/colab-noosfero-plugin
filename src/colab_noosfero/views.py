@@ -9,6 +9,7 @@ class NoosferoProxyView(ColabProxyView):
     diazo_theme_template = 'proxy/noosfero.html'
     rewrite = (
         ('^/social/account/login(.*)$', r'{}\1'.format(settings.LOGIN_URL)),
+        ('^/social/profile/([\w@+.-]+)$', r'/account/\1/edit'),
     )
 
     def dispatch(self, request, *args, **kwargs):
