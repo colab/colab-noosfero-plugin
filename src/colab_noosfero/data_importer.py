@@ -12,7 +12,7 @@ from colab.plugins.data import PluginDataImporter
 from colab.plugins.models import TimeStampPlugin
 from colab_noosfero.models import (NoosferoArticle, NoosferoCommunity,
                                    NoosferoCategory, NoosferoSoftwareCommunity,
-                                   NoosferoSoftwareAdmin, NoosferoComment)
+                                   NoosferoSoftwareAdmin, NoosferoComment, NoosferoUser)
 
 LOGGER = logging.getLogger('colab_noosfero')
 
@@ -216,6 +216,38 @@ class NoosferoDataImporter(PluginDataImporter):
                     article.categories.add(category.id)
             page += 1
 
+
+    def fetch_users(self):
+        url = '/api/v1/people'
+        timestamp = TimeStampPlugin.get_last_updated('NoosferoUser')
+
+        can_updated_timestamp = True
+        page = 1
+        while True:
+            json_data = self.get_json_data(url, page, timestamp=timestamp,
+                                           order="updated_at DESC")
+            if not len(json_data) or not len(json_data.get('people', [])):
+                break
+
+            json_data = json_data['people']
+            if can_updated_timestamp:
+                self.save_last_update(json_data[0]['updated_at'],
+                                      "NoosferoUser")
+                can_updated_timestamp = False
+
+            for element in json_data:
+                user = NoosferoUser()
+                user.id = element['id']
+                user.name = element['name']
+                user.username = element['identifier']
+
+                try:
+                    user.save()
+                except:
+                    continue
+
+            page += 1
+
     def save_last_update(self, last_updated, class_name):
         TimeStampPlugin.update_timestamp(class_name, last_updated=last_updated)
 
@@ -235,3 +267,7 @@ class NoosferoDataImporter(PluginDataImporter):
 
         LOGGER.info("Importing Software Communities")
         self.fetch_software_communities()
+
+
+        LOGGER.info("Importing Users")
+        self.fetch_users()
