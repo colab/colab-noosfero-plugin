@@ -44,6 +44,7 @@ class NoosferoCategory(models.Model):
     def __unicode__(self):
         return u"{}-{}".format(self.id, self.name)
 
+
 class NoosferoUser(models.Model):
 
     id = models.IntegerField(primary_key=True)
@@ -53,6 +54,7 @@ class NoosferoUser(models.Model):
     class Meta:
         verbose_name = _('Noosfero User')
         verbose_name_plural = _('Noosfero User')
+
 
 class NoosferoComment(models.Model):
 

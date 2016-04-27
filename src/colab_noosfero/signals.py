@@ -12,6 +12,7 @@ from colab.accounts.signals import (user_basic_info_updated)
 
 LOGGER = logging.getLogger('colab.plugins.gitlab')
 
+
 @receiver(pre_save, sender=NoosferoSoftwareCommunity)
 def verify_community_creation(sender, **kwargs):
     software_community = kwargs.get('instance')
@@ -24,6 +25,7 @@ def verify_community_creation(sender, **kwargs):
         send('community_updated', 'noosfero',
              community=software_community.community)
 
+
 @receiver(user_basic_info_updated)
 def update_basic_info_noosfero_user(sender, **kwargs):
     user = kwargs.get('user')
@@ -34,14 +36,13 @@ def update_basic_info_noosfero_user(sender, **kwargs):
         return
 
     app_config = settings.COLAB_APPS.get('colab_noosfero', {})
-    private_token = app_config.get('private_token')
     upstream = app_config.get('upstream', '').rstrip('/')
     verify_ssl = app_config.get('verify_ssl', True)
 
-    users_endpoint = '{}/api/v1/people/{}'.format(upstream,noosfero_user.id)
+    users_endpoint = '{}/api/v1/people/{}'.format(upstream, noosfero_user.id)
 
     params = {
-        'id' : noosfero_user.id,
+        'id': noosfero_user.id,
         'person[name]': user.get_full_name(),
         'person[personal_website]': user.webpage
     }
@@ -49,12 +50,13 @@ def update_basic_info_noosfero_user(sender, **kwargs):
     if update_email:
         params['person[email]'] = user.email
 
+    error_msg = u'Error trying to update "%s"\'s basic info on'
+    'Noosfero. Reason: %s'
 
-    error_msg = u'Error trying to update "%s"\'s basic info on Noosfero. Reason: %s'
     try:
         headers = {'Remote-User': user.username}
         response = requests.post(users_endpoint, params=params,
-                                 verify=verify_ssl,headers=headers)
+                                 verify=verify_ssl, headers=headers)
     except Exception as excpt:
         reason = 'Request to API failed ({})'.format(excpt)
         LOGGER.error(error_msg, user.username, reason)
@@ -70,7 +72,8 @@ def update_basic_info_noosfero_user(sender, **kwargs):
             reason = '{} :: {}'.format(response.status_code,
                                        value_error.message)
 
-        LOGGER.error(error_msg, user.username, reason)
+            LOGGER.error(error_msg, user.username, reason)
+        LOGGER.error(error_msg, user.username, fail_data)
         return
 
     LOGGER.info('Noosfero user\'s basic info "%s" updated', user.username)
