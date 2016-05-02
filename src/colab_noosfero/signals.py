@@ -8,7 +8,7 @@ from django.dispatch import receiver
 from django.core.exceptions import ObjectDoesNotExist
 from colab.signals.signals import send
 from .models import NoosferoUser, NoosferoSoftwareCommunity
-from colab.accounts.signals import (user_basic_info_updated)
+from colab.accounts.signals import (user_basic_info_updated, delete_user)
 
 LOGGER = logging.getLogger('colab.plugins.noosfero')
 
@@ -70,7 +70,53 @@ def update_basic_info_noosfero_user(sender, **kwargs):
                                        value_error.message)
 
             LOGGER.error(error_msg, user.username, reason)
-        LOGGER.error(error_msg, user.username, fail_data)
         return
 
     LOGGER.info('Noosfero user\'s basic info "%s" updated', user.username)
+
+@receiver(delete_user)
+def delete_user(sender, **kwargs):
+    user = kwargs.get('user')
+
+    noosfero_user = NoosferoUser.objects.filter(username=user.username).first()
+
+    if not noosfero_user:
+        return
+
+    app_config = settings.COLAB_APPS.get('colab_noosfero', {})
+    upstream = app_config.get('upstream', '').rstrip('/')
+    verify_ssl = app_config.get('verify_ssl', True)
+
+    users_endpoint = '{}/api/v1/profiles/{}'.format(upstream, noosfero_user.id)
+
+    params = {
+        'id': noosfero_user.id,
+    }
+
+    error_msg = u'Error trying to delete the user "%s" from Noosfero. Reason: %s'
+
+    try:
+        headers = {'Remote-User': user.username}
+        response = requests.delete(users_endpoint, params=params,
+                                 verify=verify_ssl, headers=headers)
+
+    except Exception as excpt:
+        reason = 'Request to API failed ({})'.format(excpt)
+        LOGGER.error(error_msg, user.username, reason)
+        return
+
+    if response.status_code != 201:
+        reason = 'Unknown.'
+
+        try:
+            fail_data = response.json()
+
+        except ValueError as value_error:
+            reason = '{} :: {}'.format(response.status_code,
+                                       value_error.message)
+
+            LOGGER.error(error_msg, user.username, reason)
+        LOGGER.error(error_msg, user.username, fail_data)
+        return
+
+    LOGGER.info('Noosfero user "%s" deleted', user.username)
