@@ -12,6 +12,7 @@ from colab.accounts.signals import (user_basic_info_updated, delete_user)
 
 LOGGER = logging.getLogger('colab.plugins.noosfero')
 
+
 @receiver(pre_save, sender=NoosferoSoftwareCommunity)
 def verify_community_creation(sender, **kwargs):
     software_community = kwargs.get('instance')
@@ -49,30 +50,36 @@ def update_basic_info_noosfero_user(sender, **kwargs):
     if update_email:
         params['person[email]'] = user.email
 
-    error_msg = u'Error trying to update "%s"\'s basic info on Noosfero. Reason: %s'
+    error_msg = u'Error trying to update "{}"\'s basic info on Noosfero.'
+    error_msg += ' Reason: {}'
+
     try:
         headers = {'Remote-User': user.username}
         response = requests.post(users_endpoint, params=params,
                                  verify=verify_ssl,headers=headers)
     except Exception as excpt:
         reason = 'Request to API failed ({})'.format(excpt)
-        LOGGER.error(error_msg, user.username, reason)
+        error_msg = error_msg.format(user.username, reason)
+        LOGGER.error(error_msg)
         return
 
-    if response.status_code != 201:
+    if response.status_code != 202:
         reason = 'Unknown.'
 
         try:
             fail_data = response.json()
+            reason += " JSON=" + str(fail_data)
 
         except ValueError as value_error:
             reason = '{} :: {}'.format(response.status_code,
                                        value_error.message)
 
-            LOGGER.error(error_msg, user.username, reason)
+        error_msg = error_msg.format(user.username, reason)
+        LOGGER.error(error_msg)
         return
 
     LOGGER.info('Noosfero user\'s basic info "%s" updated', user.username)
+
 
 @receiver(delete_user)
 def delete_user(sender, **kwargs):
@@ -93,30 +100,35 @@ def delete_user(sender, **kwargs):
         'id': noosfero_user.id,
     }
 
-    error_msg = u'Error trying to delete the user "%s" from Noosfero. Reason: %s'
+    error_msg = u'Error trying to delete the user "{}" on Noosfero. Reason: {}'
 
     try:
         headers = {'Remote-User': user.username}
         response = requests.delete(users_endpoint, params=params,
-                                 verify=verify_ssl, headers=headers)
+                                   verify=verify_ssl, headers=headers)
 
     except Exception as excpt:
         reason = 'Request to API failed ({})'.format(excpt)
-        LOGGER.error(error_msg, user.username, reason)
+        error_msg = error_msg.format(user.username, reason)
+        LOGGER.error(error_msg)
         return
 
-    if response.status_code != 201:
+    if response.status_code != 200:
         reason = 'Unknown.'
 
         try:
             fail_data = response.json()
+            reason += " JSON="+str(fail_data)
 
         except ValueError as value_error:
             reason = '{} :: {}'.format(response.status_code,
                                        value_error.message)
 
-            LOGGER.error(error_msg, user.username, reason)
-        LOGGER.error(error_msg, user.username, fail_data)
+        error_msg = error_msg.format(user.username, reason)
+        LOGGER.error(error_msg)
         return
 
-    LOGGER.info('Noosfero user "%s" deleted', user.username)
+    noosfero_user.delete()
+
+    msg = 'Noosfero user "{}" deleted'.format(user.username)
+    LOGGER.info(msg)
