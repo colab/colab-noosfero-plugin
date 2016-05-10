@@ -7,7 +7,7 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('colab_noosfero', '0008_noosferosoftwareadmin_username'),
+        ('colab_noosfero', '0009_noosferocomment'),
     ]
 
     operations = [
