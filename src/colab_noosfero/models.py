@@ -45,6 +45,17 @@ class NoosferoCategory(models.Model):
         return u"{}-{}".format(self.id, self.name)
 
 
+class NoosferoUser(models.Model):
+
+    id = models.IntegerField(primary_key=True)
+    name = models.CharField(max_length=255)
+    username = models.CharField(max_length=255)
+
+    class Meta:
+        verbose_name = _('Noosfero User')
+        verbose_name_plural = _('Noosfero User')
+
+
 class NoosferoComment(models.Model):
 
     id = models.IntegerField(primary_key=True)

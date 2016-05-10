@@ -1,3 +1,5 @@
+import os
+import sys
 
 from django.conf import settings
 
@@ -13,6 +15,7 @@ class NoosferoProxyView(ColabProxyView):
     )
 
     def dispatch(self, request, *args, **kwargs):
+        self.request = request
         return super(NoosferoProxyView, self).dispatch(request,
                                                        *args, **kwargs)
 
@@ -38,3 +41,17 @@ class NoosferoProxyView(ColabProxyView):
         headers = super(NoosferoProxyView, self).get_request_headers()
         headers['Host'] = self.request.META['HTTP_HOST']
         return headers
+
+
+class NoosferoProfileProxyView(ColabProxyView):
+    app_label = 'colab_noosfero'
+    diazo_theme_template = 'widgets/noosfero_profile.html'
+
+    @property
+    def diazo_rules(self):
+        child_class_file = sys.modules[self.__module__].__file__
+        app_path = os.path.abspath(os.path.dirname(child_class_file))
+        diazo_path = os.path.join(app_path, 'widgets/profile/diazo.xml')
+
+        self.log.debug("diazo_rules: %s", diazo_path)
+        return diazo_path
