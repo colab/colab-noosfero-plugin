@@ -12,7 +12,8 @@ from colab.plugins.data import PluginDataImporter
 from colab.plugins.models import TimeStampPlugin
 from colab_noosfero.models import (NoosferoArticle, NoosferoCommunity,
                                    NoosferoCategory, NoosferoSoftwareCommunity,
-                                   NoosferoSoftwareAdmin, NoosferoComment, NoosferoUser)
+                                   NoosferoSoftwareAdmin, NoosferoComment,
+                                   NoosferoUser)
 
 LOGGER = logging.getLogger('colab_noosfero')
 
