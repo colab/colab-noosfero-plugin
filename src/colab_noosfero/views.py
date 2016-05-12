@@ -2,6 +2,7 @@ import os
 import sys
 
 from django.conf import settings
+from django.shortcuts import redirect
 
 from colab.plugins.views import ColabProxyView
 
@@ -9,13 +10,25 @@ from colab.plugins.views import ColabProxyView
 class NoosferoProxyView(ColabProxyView):
     app_label = 'colab_noosfero'
     diazo_theme_template = 'proxy/noosfero.html'
+
     rewrite = (
         ('^/social/account/login(.*)$', r'{}\1'.format(settings.LOGIN_URL)),
-        ('^/social/profile/([\w@+.-]+)$', r'/account/\1/edit'),
+        ('^/social/account/change_password$', 'password_change')
     )
+
+    def verify_forbidden_path(self, path, user):
+        forbidden = '/social/myprofile/{}/profile_editor/edit'.format(user)
+        if forbidden in path:
+            return True
+        return False
 
     def dispatch(self, request, *args, **kwargs):
         self.request = request
+
+        if self.verify_forbidden_path(self.request.path, self.request.user):
+            path = r'/account/{}/edit'.format(self.request.user)
+            return redirect(path)
+
         return super(NoosferoProxyView, self).dispatch(request,
                                                        *args, **kwargs)
 
