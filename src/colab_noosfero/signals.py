@@ -56,7 +56,7 @@ def update_basic_info_noosfero_user(sender, **kwargs):
     try:
         headers = {'Remote-User': user.username}
         response = requests.post(users_endpoint, params=params,
-                                 verify=verify_ssl,headers=headers)
+                                 verify=verify_ssl, headers=headers)
     except Exception as excpt:
         reason = 'Request to API failed ({})'.format(excpt)
         error_msg = error_msg.format(user.username, reason)

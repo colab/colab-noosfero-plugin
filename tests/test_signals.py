@@ -39,7 +39,7 @@ class NoosferoTest(TestCase):
             username="testuser",
             get_full_name=lambda: "Full Name Test"
         )
-        NoosferoUser.objects.get_or_create(id=1,username="testuser")
+        NoosferoUser.objects.get_or_create(id=1, username="testuser")
 
         update_basic_info_noosfero_user(None, user=user, password="password")
 
@@ -68,14 +68,19 @@ class NoosferoTest(TestCase):
             get_full_name=lambda: "Full Name Test"
         )
 
-        NoosferoUser.objects.get_or_create(id=1,username="testuser")
+        NoosferoUser.objects.get_or_create(id=1, username="testuser")
 
         update_basic_info_noosfero_user(None, user=user)
 
-        error_msg = u'Error trying to update "{}"\'s basic info on Noosfero. Reason: {}'
+        error_msg = u'Error trying to update "{}"\'s '
+        error_msg += u'basic info on Noosfero. Reason: {}'
         reason = 'Request to API failed ({})'.format(Exception())
-        error_msg = error_msg.format(user.username,reason)
+
+        error_msg = error_msg.format(user.username, reason)
         LOGGER_error_mock.assert_called_with(error_msg)
+
+    def return_json(self):
+        return {'message': 'Unauthorized'}
 
     @patch('colab_noosfero.signals.settings.COLAB_APPS')
     @patch('colab_noosfero.signals.requests.post')
@@ -84,10 +89,10 @@ class NoosferoTest(TestCase):
                                                   resquests_post_mock,
                                                   COLAB_APPS_mock):
 
-        json_resulted = lambda: {'message': 'Unauthorized'}
+        json_resulted = self.return_json
         resquests_post_mock.return_value = Mock(
             status_code=500,
-            json= json_resulted
+            json=self.return_json
         )
 
         COLAB_APPS_mock.return_value = {
@@ -103,12 +108,13 @@ class NoosferoTest(TestCase):
             get_full_name=lambda: "Full Name Test"
         )
 
-        NoosferoUser.objects.get_or_create(id=1,username="testuser")
+        NoosferoUser.objects.get_or_create(id=1, username="testuser")
 
         update_basic_info_noosfero_user(None, user=user)
 
-        error_msg = u'Error trying to update "{}"\'s basic info on Noosfero. Reason: {}. JSON={}'
-        error_msg = error_msg.format(user.username,'Unknown',json_resulted())
+        error_msg = u'Error trying to update "{}"\'s '
+        error_msg += u'basic info on Noosfero. Reason: {}. JSON={}'
+        error_msg = error_msg.format(user.username, 'Unknown', json_resulted())
         LOGGER_error_mock.assert_called_with(error_msg)
 
     @patch('colab_noosfero.signals.settings.COLAB_APPS')
@@ -137,13 +143,13 @@ class NoosferoTest(TestCase):
             get_full_name=lambda: "Full Name Test"
         )
 
-        NoosferoUser.objects.get_or_create(id=1,username="testuser")
+        NoosferoUser.objects.get_or_create(id=1, username="testuser")
 
         delete_user(None, user=user)
 
         msg = 'Noosfero user "{}" deleted'.format(user.username)
         LOGGER_info_mock.assert_called_with(msg)
-        self.assertEquals(0,len(NoosferoUser.objects.filter(id=1)))
+        self.assertEquals(0, len(NoosferoUser.objects.filter(id=1)))
 
     @patch('colab_noosfero.signals.settings.COLAB_APPS')
     @patch('colab_noosfero.signals.requests.delete')
@@ -167,13 +173,14 @@ class NoosferoTest(TestCase):
             get_full_name=lambda: "Full Name Test"
         )
 
-        NoosferoUser.objects.get_or_create(id=1,username="testuser")
+        NoosferoUser.objects.get_or_create(id=1, username="testuser")
 
         delete_user(None, user=user)
 
-        error_msg = u'Error trying to delete the user "{}" on Noosfero. Reason: {}'
+        error_msg = u'Error trying to delete the user "{}" '
+        error_msg += u'on Noosfero. Reason: {}'
         reason = 'Request to API failed ({})'.format(Exception())
-        error_msg = error_msg.format(user.username,reason)
+        error_msg = error_msg.format(user.username, reason)
         LOGGER_error_mock.assert_called_with(error_msg)
 
     @patch('colab_noosfero.signals.settings.COLAB_APPS')
@@ -183,10 +190,10 @@ class NoosferoTest(TestCase):
                                                   resquests_post_mock,
                                                   COLAB_APPS_mock):
 
-        json_resulted = lambda: {'message': 'Unauthorized'}
+        json_resulted = self.return_json
         resquests_post_mock.return_value = Mock(
             status_code=500,
-            json=json_resulted
+            json=self.return_json
         )
 
         COLAB_APPS_mock.return_value = {
@@ -202,10 +209,11 @@ class NoosferoTest(TestCase):
             get_full_name=lambda: "Full Name Test"
         )
 
-        NoosferoUser.objects.get_or_create(id=1,username="testuser")
+        NoosferoUser.objects.get_or_create(id=1, username="testuser")
 
         delete_user(None, user=user)
 
-        error_msg = u'Error trying to delete the user "{}" on Noosfero. Reason: {}. JSON={}'
-        error_msg = error_msg.format(user.username,'Unknown',json_resulted())
+        error_msg = u'Error trying to delete the user "{}" on Noosfero.'
+        error_msg += u' Reason: {}. JSON={}'
+        error_msg = error_msg.format(user.username, 'Unknown', json_resulted())
         LOGGER_error_mock.assert_called_with(error_msg)
