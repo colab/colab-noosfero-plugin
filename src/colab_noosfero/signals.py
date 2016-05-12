@@ -63,7 +63,7 @@ def update_basic_info_noosfero_user(sender, **kwargs):
         LOGGER.error(error_msg)
         return
 
-    if response.status_code != 202:
+    if response.status_code != 201:
         reason = 'Unknown.'
 
         try:

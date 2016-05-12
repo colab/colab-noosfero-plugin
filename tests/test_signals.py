@@ -22,7 +22,7 @@ class NoosferoTest(TestCase):
                                                 COLAB_APPS_mock):
 
         resquests_post_mock.return_value = Mock(
-            status_code=202,
+            status_code=201,
             json=lambda: {'message': 'Unauthorized'}
         )
 
