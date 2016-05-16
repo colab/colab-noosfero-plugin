@@ -4,7 +4,8 @@
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     version='2.0'>
 
-    <xsl:variable name="username" select="str:replace(//a/@href[(contains(., '/social/myprofile/'))], '/social/myprofile/', '')" />
+    <xsl:variable name="partial_replace" select="str:replace(//a/@href[(contains(., '/social/myprofile/'))], '/social/myprofile/', '')" />
+    <xsl:variable name="username" select="str:replace($partial_replace, '/profile_editor/edit/', '')" />
 
     <xsl:template match="form/@enctype[contains(., 'multipart')]"/>
     <xsl:template match="form/@action[contains(., '/social/')]">
