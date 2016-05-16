@@ -2,6 +2,7 @@ include setup.cfg
 include README.md
 include MANIFEST.in
 include src/colab_noosfero/diazo.xml
+include src/colab_noosfero/widgets/profile/diazo.xml
 recursive-include src/colab_noosfero/static *
 recursive-include src/colab_noosfero/locale *
 recursive-include src/colab_noosfero/templates *

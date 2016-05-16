@@ -22,7 +22,7 @@ tests_require = [
 
 setup(
     name="colab-noosfero",
-    version='0.2.8',
+    version='0.2.9',
     author='Sergio Oliveira',
     author_email='sergio@tracy.com.br',
     url='https://github.com/colab/colab-noosfero-plugin',
