@@ -108,3 +108,15 @@ msgstr "Por"
 #: src/colab_noosfero/widgets/profile/profile.py:8
 msgid "Social"
 msgstr "Social"
+
+#: src/colab_noosfero/widgets/profile/profile.py:8
+msgid "Users"
+msgstr "Usuários"
+
+#: plugins.d/noosfero.py:39
+msgid "Profile"
+msgstr "Perfil"
+
+#: plugins.d/noosfero.py:39
+msgid "Control Panel"
+msgstr "Painel de Controle"
