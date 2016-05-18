@@ -124,3 +124,7 @@ msgstr "Painel de Controle"
 #: plugins.d/nosofero.py: 39
 msgid "Institutions"
 msgstr "Instituições"
+
+#: templates/search/comment_search_preview.html: 10
+msgid "Comment"
+msgstr "Commentário"

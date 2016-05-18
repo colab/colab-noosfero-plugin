@@ -1,5 +1,5 @@
 {% extends "search-base.html" %}
-{% load urls set_var %}
+{% load urls set_var i18n %}
 
 {% block content %}
   {% profile_url result.username as user_url %}
@@ -7,7 +7,8 @@
   {% set 'title' result.title %}
   {% set 'modified' result.created_at %}
   {% set 'url' result.url %}
-  {% set 'registered_in' "Article" %}
+  {% trans "Article" as article_text %}
+  {% set 'registered_in' article_text %}
   {% if result.body != "{}"  %}
       {% set 'description' result.body|striptags|truncatechars:"140" %}
   {% endif %}
