@@ -120,3 +120,7 @@ msgstr "Perfil"
 #: plugins.d/noosfero.py:39
 msgid "Control Panel"
 msgstr "Painel de Controle"
+
+#: plugins.d/nosofero.py: 39
+msgid "Institutions"
+msgstr "Instituições"
