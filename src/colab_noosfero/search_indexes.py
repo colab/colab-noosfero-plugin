@@ -20,7 +20,8 @@ table = string.maketrans(
 
 
 class NoosferoCommunityIndex(indexes.SearchIndex, indexes.Indexable):
-    text = indexes.EdgeNgramField(document=True, use_template=True, stored=False)
+    text = indexes.EdgeNgramField(document=True,
+                                  use_template=True, stored=False)
     title = indexes.EdgeNgramField(model_attr='name')
     description = indexes.EdgeNgramField(model_attr='description', null=True)
     url = indexes.EdgeNgramField(model_attr='url', indexed=False)
@@ -49,7 +50,8 @@ class NoosferoCommunityIndex(indexes.SearchIndex, indexes.Indexable):
 
 class NoosferoCommentIndex(indexes.SearchIndex, indexes.Indexable):
 
-    text = indexes.EdgeNgramField(document=True, use_template=True, stored=False)
+    text = indexes.EdgeNgramField(document=True,
+                                  use_template=True, stored=False)
     type = indexes.EdgeNgramField()
     title = indexes.EdgeNgramField(model_attr='title')
     username = indexes.EdgeNgramField(model_attr='username', null=True)
@@ -71,7 +73,8 @@ class NoosferoCommentIndex(indexes.SearchIndex, indexes.Indexable):
 
 class NoosferoArticleIndex(indexes.SearchIndex, indexes.Indexable):
 
-    text = indexes.EdgeNgramField(document=True, use_template=True, stored=False)
+    text = indexes.EdgeNgramField(document=True,
+                                  use_template=True, stored=False)
     type = indexes.EdgeNgramField()
     title = indexes.EdgeNgramField(model_attr='title')
     username = indexes.EdgeNgramField(model_attr='username', null=True)
@@ -98,12 +101,13 @@ class NoosferoArticleIndex(indexes.SearchIndex, indexes.Indexable):
 
 class NoosferoSoftwareCommunitiesIndex(indexes.SearchIndex, indexes.Indexable):
 
-    text = indexes.EdgeNgramField(document=True, use_template=True, stored=False)
+    text = indexes.EdgeNgramField(document=True,
+                                  use_template=True, stored=False)
     type = indexes.EdgeNgramField()
     icon_name = indexes.EdgeNgramField()
     finality = indexes.EdgeNgramField(model_attr='finality')
     repository_link = indexes.EdgeNgramField(model_attr='repository_link',
-                                        null=True)
+                                             null=True)
     features = indexes.EdgeNgramField(model_attr='features', null=True)
     license = indexes.EdgeNgramField(model_attr='license_info', null=True)
     tags = indexes.MultiValueField()
