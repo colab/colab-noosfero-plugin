@@ -20,16 +20,16 @@ table = string.maketrans(
 
 
 class NoosferoCommunityIndex(indexes.SearchIndex, indexes.Indexable):
-    text = indexes.CharField(document=True, use_template=True, stored=False)
-    title = indexes.CharField(model_attr='name')
-    description = indexes.CharField(model_attr='description', null=True)
-    url = indexes.CharField(model_attr='url', indexed=False)
-    icon_name = indexes.CharField()
-    type = indexes.CharField()
+    text = indexes.EdgeNgramField(document=True, use_template=True, stored=False)
+    title = indexes.EdgeNgramField(model_attr='name')
+    description = indexes.EdgeNgramField(model_attr='description', null=True)
+    url = indexes.EdgeNgramField(model_attr='url', indexed=False)
+    icon_name = indexes.EdgeNgramField()
+    type = indexes.EdgeNgramField()
     modified = indexes.DateTimeField(model_attr='modified', null=True)
     created_at = indexes.DateTimeField(model_attr='created_at', null=True)
     category = indexes.MultiValueField()
-    thumb_url = indexes.CharField(model_attr='thumb_url', null=True)
+    thumb_url = indexes.EdgeNgramField(model_attr='thumb_url', null=True)
 
     def prepare_category(self, obj):
         return obj.categories.values_list('name', flat=True)
@@ -49,14 +49,14 @@ class NoosferoCommunityIndex(indexes.SearchIndex, indexes.Indexable):
 
 class NoosferoCommentIndex(indexes.SearchIndex, indexes.Indexable):
 
-    text = indexes.CharField(document=True, use_template=True, stored=False)
-    type = indexes.CharField()
-    title = indexes.CharField(model_attr='title')
-    username = indexes.CharField(model_attr='username', null=True)
-    body = indexes.CharField(model_attr='body', null=True)
-    url = indexes.CharField(model_attr='url', indexed=False)
-    icon_name = indexes.CharField()
-    type = indexes.CharField(model_attr='type')
+    text = indexes.EdgeNgramField(document=True, use_template=True, stored=False)
+    type = indexes.EdgeNgramField()
+    title = indexes.EdgeNgramField(model_attr='title')
+    username = indexes.EdgeNgramField(model_attr='username', null=True)
+    body = indexes.EdgeNgramField(model_attr='body', null=True)
+    url = indexes.EdgeNgramField(model_attr='url', indexed=False)
+    icon_name = indexes.EdgeNgramField()
+    type = indexes.EdgeNgramField(model_attr='type')
     created_at = indexes.DateTimeField(model_attr='created_at', null=True)
 
     def get_model(self):
@@ -71,14 +71,14 @@ class NoosferoCommentIndex(indexes.SearchIndex, indexes.Indexable):
 
 class NoosferoArticleIndex(indexes.SearchIndex, indexes.Indexable):
 
-    text = indexes.CharField(document=True, use_template=True, stored=False)
-    type = indexes.CharField()
-    title = indexes.CharField(model_attr='title')
-    username = indexes.CharField(model_attr='username', null=True)
-    body = indexes.CharField(model_attr='body', null=True)
-    url = indexes.CharField(model_attr='url', indexed=False)
-    icon_name = indexes.CharField()
-    type = indexes.CharField(model_attr='type')
+    text = indexes.EdgeNgramField(document=True, use_template=True, stored=False)
+    type = indexes.EdgeNgramField()
+    title = indexes.EdgeNgramField(model_attr='title')
+    username = indexes.EdgeNgramField(model_attr='username', null=True)
+    body = indexes.EdgeNgramField(model_attr='body', null=True)
+    url = indexes.EdgeNgramField(model_attr='url', indexed=False)
+    icon_name = indexes.EdgeNgramField()
+    type = indexes.EdgeNgramField(model_attr='type')
     modified = indexes.DateTimeField(model_attr='modified', null=True)
     created_at = indexes.DateTimeField(model_attr='created_at', null=True)
     category = indexes.MultiValueField()
@@ -98,18 +98,18 @@ class NoosferoArticleIndex(indexes.SearchIndex, indexes.Indexable):
 
 class NoosferoSoftwareCommunitiesIndex(indexes.SearchIndex, indexes.Indexable):
 
-    text = indexes.CharField(document=True, use_template=True, stored=False)
-    type = indexes.CharField()
-    icon_name = indexes.CharField()
-    finality = indexes.CharField(model_attr='finality')
-    repository_link = indexes.CharField(model_attr='repository_link',
+    text = indexes.EdgeNgramField(document=True, use_template=True, stored=False)
+    type = indexes.EdgeNgramField()
+    icon_name = indexes.EdgeNgramField()
+    finality = indexes.EdgeNgramField(model_attr='finality')
+    repository_link = indexes.EdgeNgramField(model_attr='repository_link',
                                         null=True)
-    features = indexes.CharField(model_attr='features', null=True)
-    license = indexes.CharField(model_attr='license_info', null=True)
+    features = indexes.EdgeNgramField(model_attr='features', null=True)
+    license = indexes.EdgeNgramField(model_attr='license_info', null=True)
     tags = indexes.MultiValueField()
-    community = indexes.CharField()
-    community_url = indexes.CharField()
-    community_thumb = indexes.CharField()
+    community = indexes.EdgeNgramField()
+    community_url = indexes.EdgeNgramField()
+    community_thumb = indexes.EdgeNgramField()
 
     def get_model(self):
         return NoosferoSoftwareCommunity
