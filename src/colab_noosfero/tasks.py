@@ -1,4 +1,4 @@
-from colab.settings import COLAB_APPS
+from colab.settings import COLAB_APPS, SESSION_COOKIE_AGE
 import requests
 import logging
 logger = logging.getLogger(__name__)
@@ -22,7 +22,8 @@ def authenticate_user(sender, user, request, **kwargs):
 
     if noosfero_response.status_code == 200:
         session = noosfero_response.cookies.get('_noosfero_session')
-        request.COOKIES.set('_noosfero_session', session)
+        request.COOKIES.set('_noosfero_session', session,
+                            expires=SESSION_COOKIE_AGE)
 
 
 def logout_user(sender, user, request, **kwargs):
