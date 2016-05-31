@@ -12,6 +12,10 @@
         <xsl:attribute name="action">/account/<xsl:value-of select="$username"/>/edit?path=<xsl:value-of select='.'/>/#noosfero_profile</xsl:attribute>
     </xsl:template>
 
+    <xsl:template match="a/@href[contains(., '/reset_private_token/')]">
+        <xsl:attribute name="href">/account/<xsl:value-of select="$username"/>/edit?path=<xsl:value-of select='.'/>/#noosfero_profile</xsl:attribute>
+    </xsl:template>
+
     <before css:theme-children="head" css:content-children="head" />
     <before css:theme-children="#noosfero-content" css:content-children="body" />
 
