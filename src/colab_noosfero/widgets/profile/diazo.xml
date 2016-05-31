@@ -12,17 +12,13 @@
         <xsl:attribute name="action">/account/<xsl:value-of select="$username"/>/edit?path=<xsl:value-of select='.'/>/#noosfero_profile</xsl:attribute>
     </xsl:template>
 
-    <before theme-children="/html/head" content-children="/html/head" />
+    <before css:theme-children="head" css:content-children="head" />
     <before css:theme-children="#noosfero-content" css:content-children="body" />
 
     <merge attributes="class" css:theme="html" css:content="html" />
     <merge attributes="class" css:theme="body" css:content="body" />
 
     <drop css:content="head link[rel='shortcut icon']" />
-
-    <drop css:theme="link[href^='/static/third-party/bootstrap/css/bootstrap.min']" />
-    <drop css:theme="link[href^='/static/third-party/font-awesome/css/font-awesome.min']" />
-    <!-- <drop css:theme="link[href^='/static/css/screen']" /> -->
 
     <drop content="div[@class='blocks'][2]" />
     <drop content="div[@class='blocks'][1]" />

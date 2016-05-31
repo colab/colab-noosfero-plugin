@@ -1,15 +1,19 @@
 {% load static from staticfiles %}
 
-{% block head_css %}
-  <link href="{% static 'noosfero/css/bootstrap-colab-style.css' %}" media="screen, projection" rel="stylesheet" type="text/css">
-  <link href="{% static 'noosfero/css/screen.css' %}" media="screen, projection" rel="stylesheet" type="text/css">
-{% endblock %}
+<html>
+    <head>
+      <link href="{% static 'noosfero/css/bootstrap-colab-style.css' %}" media="screen, projection" rel="stylesheet" type="text/css">
+      <link href="{% static 'noosfero/css/screen.css' %}" media="screen, projection" rel="stylesheet" type="text/css">
+     <!-- Fix modal -->
+     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    </head>
 
-<div id="noosfero-content">
-</div>
+    <div id="noosfero-content">
+    </div>
 
-{% block head_js%}
-    <script type="text/javascript">
-      $('#noosfero-content form').prepend($("input[name='csrfmiddlewaretoken']").clone())
-    </script>
-{% endblock  %}
+    {% block head_js%}
+        <script type="text/javascript">
+          $('#noosfero-content form').prepend($("input[name='csrfmiddlewaretoken']").clone())
+        </script>
+    {% endblock  %}
+</html>
