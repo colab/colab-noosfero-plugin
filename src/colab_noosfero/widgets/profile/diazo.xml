@@ -9,11 +9,11 @@
 
     <xsl:template match="form/@enctype[contains(., 'multipart')]"/>
     <xsl:template match="form/@action[contains(., '/social/')]">
-        <xsl:attribute name="action">/account/<xsl:value-of select="$username"/>/edit?path=<xsl:value-of select='.'/>/#noosfero_profile</xsl:attribute>
+        <xsl:attribute name="action">/account/<xsl:value-of select="$username"/>/edit?path=<xsl:value-of select='.'/>&amp;target=noosfero_profile/#noosfero_profile</xsl:attribute>
     </xsl:template>
 
     <xsl:template match="a/@href[contains(., '/reset_private_token/')]">
-        <xsl:attribute name="href">/account/<xsl:value-of select="$username"/>/edit?path=<xsl:value-of select='.'/>/#noosfero_profile</xsl:attribute>
+        <xsl:attribute name="href">/account/<xsl:value-of select="$username"/>/edit?path=<xsl:value-of select='.'/>/&amp;target=noosfero_profile#noosfero_profile</xsl:attribute>
     </xsl:template>
 
     <before css:theme-children="head" css:content-children="head" />
@@ -29,9 +29,6 @@
     <drop content="div[@class='main-content']/h1" />
     <drop content="div[@id='delete-profile']" />
     <drop content="div[@id='profile-is-template']" />
-
-    <drop css:content="script[src^='/social/designs/themes/noosfero-spb-theme/theme.js']" />
-    <!-- <drop css:content="meta[http-equiv^=Content-Type]" /> -->
     <drop css:content="title" />
     <drop css:content="#barra-brasil" />
     <drop css:content="#user" />
