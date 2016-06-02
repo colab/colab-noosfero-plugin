@@ -26,7 +26,7 @@ class NoosferoProxyView(ColabProxyView):
         self.request = request
 
         if self.verify_forbidden_path(self.request.path, self.request.user):
-            tab = r'#noosfero_profile'
+            tab = r'?target=noosfero_profile#noosfero_profile'
             path = r'/account/{}/edit'.format(self.request.user)
             return redirect(path+tab)
 
